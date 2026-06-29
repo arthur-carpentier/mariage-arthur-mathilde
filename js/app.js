@@ -223,7 +223,7 @@ function setJourneyBar(collected, goal) {
   const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
   const fill = document.getElementById("journey-fill");
   const couple = document.getElementById("journey-couple");
-  if (fill) fill.style.width = pct + "%";
+  if (fill) fill.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
   if (couple) couple.style.left = insetCalc(pct);
 }
 function animateNumber(from, to, goal, duration) {
@@ -278,15 +278,15 @@ function celebrate(gift) {
   const pctAfter = goal > 0 ? Math.min(100, (after / goal) * 100) : 0;
   fill.style.transition = "none";
   couple.style.transition = "none";
-  fill.style.width = pctBefore + "%";
+  fill.style.clipPath = `inset(0 ${100 - pctBefore}% 0 0)`;
   couple.style.left = insetCalc(pctBefore);
   void fill.offsetWidth;
 
   setTimeout(() => {
-    fill.style.transition = "width 1.1s cubic-bezier(0.22, 1, 0.36, 1)";
+    fill.style.transition = "clip-path 1.1s cubic-bezier(0.22, 1, 0.36, 1)";
     couple.style.transition = "left 1.1s cubic-bezier(0.22, 1, 0.36, 1)";
     requestAnimationFrame(() => {
-      fill.style.width = pctAfter + "%";
+      fill.style.clipPath = `inset(0 ${100 - pctAfter}% 0 0)`;
       couple.style.left = insetCalc(pctAfter);
     });
     journey.classList.add("journey--reward");
