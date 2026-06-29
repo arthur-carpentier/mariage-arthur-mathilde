@@ -2,8 +2,8 @@
   "couple": {
     "names": "Arthur & Mathilde",
     "subtitle": "Notre voyage de noces au Japon 🗾",
-    "intro": "Pour notre mariage, plutôt qu'une liste classique, nous rêvons d'un grand voyage de deux mois à travers tout le Japon, du nord sauvage d'Hokkaidō aux plages d'Okinawa. Chaque activité ci-dessous est une étape de ce périple : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
-    "weddingDate": ""
+    "intro": "Pour notre mariage, plutôt qu'une liste classique, nous rêvons d'un grand voyage de deux mois à travers tout le Japon, en avril–mai, du nord sauvage d'Hokkaidō aux plages d'Okinawa. Chaque activité ci-dessous est une étape de ce périple : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
+    "weddingDate": "🌸 Voyage prévu en avril–mai 🌸"
   },
   "progress": {
     "collected": 0,
@@ -31,7 +31,7 @@
   },
   "notification": {
     "enabled": true,
-    "formEndpoint": "https://formsubmit.co/a7a664f7c9ef89a994554d08809cba7c",
+    "formEndpoint": "https://formsubmit.co/ajax/a7a664f7c9ef89a994554d08809cba7c",
     "_comment": "Mettez ici votre endpoint Formspree (https://formspree.io) ou FormSubmit (https://formsubmit.co/votre@email). Voir README.md. Si laissé en CHANGE_ME, le formulaire affiche un message mais n'envoie rien."
   }
 }

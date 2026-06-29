@@ -132,7 +132,7 @@ function renderJourney() {
     label.innerHTML =
       `💞 Déjà <strong>${formatPrice(collected)}</strong> réunis sur ` +
       `<strong>${formatPrice(goal)}</strong> — ` +
-      `<span class="pct">${Math.round(pct)} %</span> du voyage financé ✈️`;
+      `<span class="pct">${Math.round(pct)} %</span> du voyage financé`;
   }
 
   const fill = document.getElementById("journey-fill");
@@ -202,7 +202,7 @@ function renderGifts() {
     body.className = "card__body";
     body.innerHTML = `
       ${g.category ? `<span class="card__cat">${g.category}</span>` : ""}
-      <h3 class="card__title">${g.emoji ? g.emoji + " " : ""}${escapeHtml(g.title)}</h3>
+      <h3 class="card__title">${escapeHtml(g.title)}</h3>
       <p class="card__desc">${escapeHtml(g.description || "")}</p>
       <div class="card__footer">
         <span class="card__price">${formatPrice(g.price)}</span>
@@ -409,6 +409,8 @@ async function submitConfirm(e) {
   try {
     const data = new FormData(form);
     data.append("_subject", `🎁 Nouveau cadeau de mariage : ${state.current.title}`);
+    data.append("_captcha", "false");
+    data.append("_template", "table");
     const res = await fetch(cfg.formEndpoint, {
       method: "POST",
       body: data,
