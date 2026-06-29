@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arthur & Mathilde — Liste de mariage</title>
+  <meta name="description" content="Liste de mariage d'Arthur & Mathilde : offrez-nous une étape de notre voyage de noces au Japon 🗾" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__kicker">⛩️ Notre liste de mariage ⛩️</p>
+      <h1 class="hero__title" id="couple-names">Arthur &amp; Mathilde</h1>
+      <p class="hero__subtitle" id="couple-subtitle"></p>
+      <p class="hero__date" id="couple-date"></p>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p id="couple-intro"></p>
+    </section>
+
+    <section class="filters" id="filters" aria-label="Filtrer par catégorie"></section>
+
+    <section class="gifts" id="gifts" aria-live="polite">
+      <p class="gifts__loading">Chargement des idées de cadeaux… 🎁</p>
+    </section>
+
+    <section class="freegift">
+      <div class="freegift__card">
+        <div class="freegift__emoji">💛</div>
+        <h2>Un cadeau d'un montant libre</h2>
+        <p>Vous préférez participer librement, sans choisir d'activité ? C'est tout aussi précieux pour nous.</p>
+        <div class="freegift__amounts" id="free-amounts">
+          <button type="button" data-amount="20">20 €</button>
+          <button type="button" data-amount="50">50 €</button>
+          <button type="button" data-amount="100">100 €</button>
+        </div>
+        <div class="freegift__custom">
+          <label for="free-input">Ou un autre montant :</label>
+          <div class="freegift__inputwrap">
+            <input type="number" id="free-input" min="1" step="1" placeholder="Montant" inputmode="numeric" />
+            <span>€</span>
+          </div>
+        </div>
+        <button type="button" class="btn btn--primary" id="free-offer">Offrir ce montant</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Fait avec 💛 pour le mariage d'Arthur &amp; Mathilde</p>
+  </footer>
+
+  <!-- Modale de paiement -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__overlay" data-close></div>
+    <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button type="button" class="modal__close" data-close aria-label="Fermer">×</button>
+
+      <div class="modal__step" id="step-pay">
+        <div class="modal__gift">
+          <span class="modal__emoji" id="modal-emoji">🎁</span>
+          <div>
+            <h2 class="modal__title" id="modal-title">Cadeau</h2>
+            <p class="modal__amount" id="modal-amount"></p>
+          </div>
+        </div>
+        <p class="modal__lead">Comment souhaitez-vous nous offrir ce cadeau ?</p>
+
+        <div class="paymethods" id="paymethods"></div>
+
+        <button type="button" class="btn btn--ghost" id="to-confirm">J'ai payé → nous prévenir</button>
+        <p class="modal__hint">Cette dernière étape nous permet de savoir qui nous a gâtés et pour quoi 🙏</p>
+      </div>
+
+      <div class="modal__step" id="step-confirm" hidden>
+        <h2 class="modal__title">Dites-nous qui vous êtes 💌</h2>
+        <p class="modal__lead">Pour qu'on puisse vous remercier comme il se doit !</p>
+        <form id="confirm-form" class="confirmform">
+          <label>Votre nom <span>*</span>
+            <input type="text" name="nom" required />
+          </label>
+          <label>Votre email
+            <input type="email" name="email" placeholder="Pour notre petit mot de remerciement" />
+          </label>
+          <label>Un petit message (optionnel)
+            <textarea name="message" rows="3" placeholder="Tous nos vœux de bonheur..."></textarea>
+          </label>
+          <input type="hidden" name="cadeau" id="confirm-gift" />
+          <input type="hidden" name="montant" id="confirm-amount" />
+          <input type="hidden" name="moyen" id="confirm-method" />
+          <button type="submit" class="btn btn--primary">Envoyer 💛</button>
+        </form>
+        <div class="confirmform__done" id="confirm-done" hidden>
+          <div class="confirmform__check">🎉</div>
+          <h3>Merci infiniment !</h3>
+          <p>Votre message nous est bien parvenu. On a hâte de vous raconter le voyage !</p>
+          <button type="button" class="btn btn--ghost" data-close>Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
