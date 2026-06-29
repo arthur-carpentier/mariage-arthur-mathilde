@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" fill="none" stroke="#7d3450" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- avant-toit en vallée, à pointes relevées -->
+  <path d="M14 28 C20 20 30 20 32 30 C70 53 110 51 150 51 C190 51 230 53 268 30 C270 20 280 20 286 28"/>
+  <!-- ligne de tuiles parallèle -->
+  <path d="M36 31 C72 51 110 49 150 49 C190 49 228 51 264 31" stroke-width="1.6" opacity="0.7"/>
+  <!-- faîtage -->
+  <path d="M98 22 C126 14 174 14 202 22"/>
+  <!-- pentes vers les pointes -->
+  <path d="M98 22 L36 31"/>
+  <path d="M202 22 L264 31"/>
+  <!-- épi de faîtage -->
+  <path d="M150 14 v-4" stroke-width="2"/>
+  <circle cx="150" cy="7.5" r="2.6" stroke-width="2"/>
+  <!-- lanterne gauche -->
+  <path d="M58 46 v3" stroke-width="1.6"/>
+  <rect x="51" y="49" width="13" height="11" rx="3.5" stroke-width="1.6"/>
+  <path d="M51 52.6 h13 M51 56.2 h13" stroke-width="1" opacity="0.7"/>
+  <!-- lanterne droite -->
+  <path d="M242 46 v3" stroke-width="1.6"/>
+  <rect x="236" y="49" width="13" height="11" rx="3.5" stroke-width="1.6"/>
+  <path d="M236 52.6 h13 M236 56.2 h13" stroke-width="1" opacity="0.7"/>
+</svg>
