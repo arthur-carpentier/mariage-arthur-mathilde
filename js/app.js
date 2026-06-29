@@ -87,24 +87,34 @@ function initParallax() {
   window.addEventListener("scroll", onScroll, { passive: true });
 }
 
+let revealObserver = null;
 function initReveal() {
-  const items = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window)) {
-    items.forEach((el) => el.classList.add("is-visible"));
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible"));
     return;
   }
-  const obs = new IntersectionObserver(
+  revealObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
           e.target.classList.add("is-visible");
-          obs.unobserve(e.target);
+          revealObserver.unobserve(e.target);
         }
       });
     },
     { threshold: 0.12 }
   );
-  items.forEach((el) => obs.observe(el));
+  observeReveals();
+}
+
+/* (Ré)observe les éléments .reveal pas encore révélés — appelé après chaque rendu */
+function observeReveals() {
+  if (!revealObserver) {
+    // observer pas encore prêt (rendu initial avant initDecor) : on révèle sans animation
+    document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+  document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => revealObserver.observe(el));
 }
 
 /* ---------- Jauge de progression (France → Japon) ---------- */
@@ -214,6 +224,7 @@ function renderGifts() {
     card.appendChild(body);
     grid.appendChild(card);
   });
+  observeReveals();
 }
 
 /* ---------- Cadeau libre ---------- */
