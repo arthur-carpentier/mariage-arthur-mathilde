@@ -13,7 +13,7 @@
     },
     "bankTransfer": {
       "enabled": true,
-      "accountHolder": "Arthur Carpentier",
+      "accountHolder": "Arthur Carpentier et Mathilde Tauveron",
       "iban": "FR76 4061 8804 8300 0406 7369 770",
       "bic": "",
       "note": "Virement sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
