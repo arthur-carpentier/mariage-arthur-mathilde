@@ -1,0 +1,32 @@
+{
+  "couple": {
+    "names": "Arthur & Mathilde",
+    "subtitle": "Notre voyage de noces au Japon 🗾",
+    "intro": "Pour notre mariage, plutôt qu'une liste classique, nous rêvons d'un voyage au Japon. Chaque activité ci-dessous est une étape de ce voyage : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
+    "weddingDate": ""
+  },
+  "payment": {
+    "paypalMe": {
+      "enabled": true,
+      "url": "https://paypal.me/CHANGE_ME",
+      "note": "Merci de bien sélectionner l'option « Envoyer à un proche / Entre amis et famille » afin d'éviter les frais : nous recevons ainsi 100% de votre cadeau."
+    },
+    "bankTransfer": {
+      "enabled": true,
+      "accountHolder": "CHANGE_ME (Arthur ...)",
+      "iban": "FR76 XXXX XXXX XXXX XXXX XXXX XXX",
+      "bic": "CHANGE_ME",
+      "note": "Virement sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
+    },
+    "stripe": {
+      "enabled": false,
+      "url": "",
+      "note": "Le paiement par carte (Stripe) entraîne des frais (~1,5% + 0,25€) qui sont déduits du montant : nous ne recevrons donc qu'une partie de votre don. Privilégiez si possible PayPal entre amis ou le virement."
+    }
+  },
+  "notification": {
+    "enabled": true,
+    "formEndpoint": "https://formspree.io/f/CHANGE_ME",
+    "_comment": "Mettez ici votre endpoint Formspree (https://formspree.io) ou FormSubmit (https://formsubmit.co/votre@email). Voir README.md. Si laissé en CHANGE_ME, le formulaire affiche un message mais n'envoie rien."
+  }
+}

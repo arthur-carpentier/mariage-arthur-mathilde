@@ -1,0 +1,139 @@
+{
+  "gifts": [
+    {
+      "id": "vols",
+      "emoji": "✈️",
+      "title": "Les billets d'avion",
+      "description": "Paris → Tokyo, le grand départ ! Aidez-nous à nous envoler vers le pays du soleil levant.",
+      "price": 1200,
+      "category": "Transport",
+      "image": ""
+    },
+    {
+      "id": "jrpass",
+      "emoji": "🚄",
+      "title": "Le Japan Rail Pass",
+      "description": "7 jours de Shinkansen illimité pour sillonner le pays à 300 km/h, de Tokyo à Kyoto.",
+      "price": 320,
+      "category": "Transport",
+      "image": ""
+    },
+    {
+      "id": "hotel-tokyo",
+      "emoji": "🏙️",
+      "title": "3 nuits à Tokyo",
+      "description": "Un hôtel au cœur de Shinjuku pour s'émerveiller devant les néons et la ville qui ne dort jamais.",
+      "price": 450,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "ryokan-kyoto",
+      "emoji": "🏯",
+      "title": "Une nuit en ryokan à Kyoto",
+      "description": "Auberge traditionnelle avec tatamis, futon et bain onsen privatif. L'expérience japonaise par excellence.",
+      "price": 280,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "hotel-osaka",
+      "emoji": "🌃",
+      "title": "3 nuits à Osaka",
+      "description": "La capitale de la street food ! De quoi se poser entre deux festins de takoyaki.",
+      "price": 390,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "sushi",
+      "emoji": "🍣",
+      "title": "Un dîner gastronomique de sushis",
+      "description": "Un omakase d'exception au comptoir, préparé sous nos yeux par un maître sushi.",
+      "price": 180,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "ramen-tour",
+      "emoji": "🍜",
+      "title": "Tournée des ramens",
+      "description": "Une journée à dénicher les meilleurs bols de ramen dans les ruelles de la ville.",
+      "price": 60,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "the-matcha",
+      "emoji": "🍵",
+      "title": "Cérémonie du thé matcha",
+      "description": "Une parenthèse zen pour découvrir le rituel ancestral du thé dans un jardin de Kyoto.",
+      "price": 80,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "plongee",
+      "emoji": "🤿",
+      "title": "Plongée sous-marine à Okinawa",
+      "description": "Explorer les récifs coralliens et les eaux turquoise des îles du sud du Japon.",
+      "price": 220,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "fuji",
+      "emoji": "🗻",
+      "title": "Excursion au Mont Fuji",
+      "description": "Une journée face au sommet mythique du Japon, entre lacs et sources chaudes.",
+      "price": 150,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "kimono",
+      "emoji": "👘",
+      "title": "Journée en kimono",
+      "description": "Se vêtir de kimonos traditionnels et déambuler dans les quartiers historiques de Kyoto.",
+      "price": 90,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "onsen",
+      "emoji": "♨️",
+      "title": "Une journée aux onsen",
+      "description": "Détente absolue dans les bains thermaux volcaniques, au milieu de la nature.",
+      "price": 70,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "sakura",
+      "emoji": "🌸",
+      "title": "Pique-nique sous les cerisiers",
+      "description": "Un hanami : célébrer la floraison des sakura, un panier garni sous les pétales roses.",
+      "price": 50,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "torii",
+      "emoji": "⛩️",
+      "title": "Les mille torii de Fushimi Inari",
+      "description": "Gravir la montagne sacrée à travers des milliers de portails vermillon.",
+      "price": 40,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "karaoke",
+      "emoji": "🎤",
+      "title": "Soirée karaoké à Shibuya",
+      "description": "Chanter à tue-tête jusqu'au bout de la nuit, comme de vrais Tokyoïtes !",
+      "price": 45,
+      "category": "Détente",
+      "image": ""
+    }
+  ]
+}
