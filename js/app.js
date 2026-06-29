@@ -182,16 +182,38 @@ function observeReveals() {
   document.querySelectorAll(".reveal:not(.is-visible)").forEach((el) => revealObserver.observe(el));
 }
 
-/* ---------- Jauge de progression (France → Japon) ---------- */
-function renderJourney() {
-  const prog = state.config.progress || {};
-  const collected = Math.max(0, Number(prog.collected) || 0);
-  const goal =
-    Number(prog.goal) > 0
-      ? Number(prog.goal)
-      : state.gifts.reduce((sum, g) => sum + (Number(g.price) || 0), 0);
-  const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
+/* ---------- Contributions mémorisées (cache front) ---------- */
+const STORE_KEY = "am_contribs";
+function loadContribs() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch (e) { return []; }
+}
+function saveContribs(arr) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); } catch (e) {}
+}
+function localTotal() {
+  return loadContribs().reduce((s, c) => s + (Number(c.amount) || 0), 0);
+}
+function offeredIds() {
+  return new Set(loadContribs().map((c) => c.id).filter((id) => id && id !== "libre"));
+}
+function baseCollected() {
+  return Math.max(0, Number((state.config.progress || {}).collected) || 0);
+}
+function goalAmount() {
+  const p = state.config.progress || {};
+  return Number(p.goal) > 0 ? Number(p.goal) : state.gifts.reduce((s, g) => s + (Number(g.price) || 0), 0);
+}
+function currentCollected() {
+  return baseCollected() + localTotal();
+}
 
+/* ---------- Jauge de progression (France → Japon) ---------- */
+const COUPLE_INSET = 30; // demi-largeur du marqueur, garde le couple dans la piste
+function insetCalc(pct) {
+  return `calc(${COUPLE_INSET}px + (100% - ${2 * COUPLE_INSET}px) * ${pct / 100})`;
+}
+function setJourneyLabel(collected, goal) {
+  const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
   const label = $("#journey-label");
   if (label) {
     label.innerHTML =
@@ -199,19 +221,168 @@ function renderJourney() {
       `<strong>${formatPrice(goal)}</strong> — ` +
       `<span class="pct">${Math.round(pct)} %</span> du voyage financé`;
   }
-
+}
+function setJourneyBar(collected, goal) {
+  const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
   const fill = document.getElementById("journey-fill");
   const couple = document.getElementById("journey-couple");
-  if (!fill || !couple) return;
+  if (fill) fill.style.width = pct + "%";
+  if (couple) couple.style.left = insetCalc(pct);
+}
+function animateNumber(from, to, goal, duration) {
+  let start = null;
+  const ease = (t) => 1 - Math.pow(1 - t, 3);
+  function frame(ts) {
+    if (start === null) start = ts;
+    const t = Math.min(1, (ts - start) / duration);
+    setJourneyLabel(Math.round(from + (to - from) * ease(t)), goal);
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
 
-  // on part de 0 puis on anime vers la cible (transition CSS sur width/left)
-  // le marqueur reste dans la piste (retrait = sa demi-largeur) pour ne pas
-  // déborder sur les silhouettes France / Japon.
-  const inset = 30;
+function renderJourney() {
+  const goal = goalAmount();
+  const collected = currentCollected();
+  setJourneyLabel(collected, goal);
+  // animation d'arrivée : barre + couple partent de 0, compteur grimpe
   requestAnimationFrame(() => {
-    fill.style.width = pct + "%";
-    couple.style.left = `calc(${inset}px + (100% - ${2 * inset}px) * ${pct / 100})`;
+    setJourneyBar(collected, goal);
+    if (collected > 0) animateNumber(0, collected, goal, 1400);
   });
+}
+
+/* ---------- Séquence « récompense » à la validation d'un cadeau ---------- */
+function celebrate(gift) {
+  const before = currentCollected();
+  const arr = loadContribs();
+  arr.push({ id: gift.id, title: gift.title, amount: Number(gift.amount) || 0, ts: Date.now() });
+  saveContribs(arr);
+  const after = currentCollected();
+  const goal = goalAmount();
+
+  if (gift.id && gift.id !== "libre") markOffered(gift.id);
+  closeModal();
+
+  const journey = document.getElementById("journey");
+  if (!journey) return;
+  journey.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  if (prefersReducedMotion()) {
+    setJourneyBar(after, goal);
+    setJourneyLabel(after, goal);
+    return;
+  }
+
+  // on fige l'état de départ puis on relance la transition vers la nouvelle valeur
+  const fill = document.getElementById("journey-fill");
+  const couple = document.getElementById("journey-couple");
+  const pctBefore = goal > 0 ? Math.min(100, (before / goal) * 100) : 0;
+  const pctAfter = goal > 0 ? Math.min(100, (after / goal) * 100) : 0;
+  fill.style.transition = "none";
+  couple.style.transition = "none";
+  fill.style.width = pctBefore + "%";
+  couple.style.left = insetCalc(pctBefore);
+  void fill.offsetWidth;
+
+  setTimeout(() => {
+    fill.style.transition = "width 1.1s cubic-bezier(0.22, 1, 0.36, 1)";
+    couple.style.transition = "left 1.1s cubic-bezier(0.22, 1, 0.36, 1)";
+    requestAnimationFrame(() => {
+      fill.style.width = pctAfter + "%";
+      couple.style.left = insetCalc(pctAfter);
+    });
+    journey.classList.add("journey--reward");
+    setTimeout(() => journey.classList.remove("journey--reward"), 1000);
+    confettiBurst(journey);
+    floatGain(Number(gift.amount) || 0, journey);
+    animateNumber(before, after, goal, 1200);
+  }, 480); // laisse le scroll « zoomer » sur la barre d'abord
+}
+
+function markOffered(id) {
+  document.querySelectorAll(`.card[data-id="${cssEscape(id)}"]`).forEach(decorateOffered);
+}
+function decorateOffered(card) {
+  if (!card || card.classList.contains("card--offered")) return;
+  card.classList.add("card--offered");
+  const badge = document.createElement("div");
+  badge.className = "card__badge";
+  badge.textContent = "✓ Déjà offert";
+  card.appendChild(badge);
+}
+function cssEscape(s) {
+  return String(s).replace(/["\\]/g, "\\$&");
+}
+
+/* Confettis maison (canvas plein écran, sans dépendance) */
+function confettiBurst(target) {
+  const canvas = document.createElement("canvas");
+  canvas.className = "confetti-canvas";
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  canvas.style.width = window.innerWidth + "px";
+  canvas.style.height = window.innerHeight + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const r = target.getBoundingClientRect();
+  const ox = r.left + r.width / 2;
+  const oy = r.top + r.height / 2;
+  const colors = ["#B05078", "#3A6E8C", "#4E7A60", "#F6D5E0", "#D6E7F1", "#E6B422"];
+  const parts = [];
+  const N = 150;
+  for (let i = 0; i < N; i++) {
+    const ang = Math.PI * 2 * (i / N) + Math.random() * 0.5;
+    const spd = 4 + Math.random() * 8;
+    parts.push({
+      x: ox, y: oy,
+      vx: Math.cos(ang) * spd,
+      vy: Math.sin(ang) * spd - (3 + Math.random() * 4),
+      g: 0.16 + Math.random() * 0.14,
+      rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.5,
+      w: 6 + Math.random() * 7, h: 9 + Math.random() * 9,
+      color: colors[i % colors.length],
+      life: 0, max: 70 + Math.random() * 45,
+    });
+  }
+  let frame = 0;
+  function tick() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    let alive = false;
+    for (const p of parts) {
+      if (p.life > p.max) continue;
+      alive = true;
+      p.life++;
+      p.vy += p.g; p.x += p.vx; p.y += p.vy; p.vx *= 0.99; p.rot += p.vr;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, 1 - p.life / p.max);
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    frame++;
+    if (alive && frame < 240) requestAnimationFrame(tick);
+    else canvas.remove();
+  }
+  requestAnimationFrame(tick);
+}
+
+/* « +X € » qui s'envole au-dessus de la barre */
+function floatGain(amount, target) {
+  if (!amount) return;
+  const el = document.createElement("div");
+  el.className = "gain-float";
+  el.textContent = "+" + formatPrice(amount);
+  document.body.appendChild(el);
+  const r = target.getBoundingClientRect();
+  el.style.left = r.left + r.width / 2 + "px";
+  el.style.top = r.top + r.height / 2 + "px";
+  requestAnimationFrame(() => el.classList.add("gain-float--go"));
+  setTimeout(() => el.remove(), 1600);
 }
 
 /* ---------- Textes du couple ---------- */
@@ -253,9 +424,11 @@ function renderGifts() {
       : state.gifts.filter((g) => g.category === state.activeCategory);
 
   grid.innerHTML = "";
+  const offered = offeredIds();
   list.forEach((g) => {
     const card = document.createElement("article");
     card.className = "card reveal";
+    card.dataset.id = g.id;
 
     const media = document.createElement("div");
     media.className = "card__media";
@@ -286,6 +459,7 @@ function renderGifts() {
 
     card.appendChild(media);
     card.appendChild(body);
+    if (offered.has(g.id)) decorateOffered(card);
     grid.appendChild(card);
   });
   observeReveals();
@@ -463,16 +637,15 @@ async function submitConfirm(e) {
   submitBtn.disabled = true;
   submitBtn.textContent = "Envoi…";
 
-  const showDone = () => {
-    $("#confirm-form").hidden = true;
-    $("#confirm-done").hidden = false;
+  const onConfirmed = () => {
     submitBtn.disabled = false;
     submitBtn.textContent = "Envoyer 💛";
+    celebrate(state.current);
   };
 
   if (!cfg.enabled || !isReal(cfg.formEndpoint)) {
-    // Pas d'endpoint configuré : on remercie quand même (le couple sera prévenu par sa banque/PayPal).
-    showDone();
+    // Pas d'endpoint configuré : on fête quand même (le couple sera prévenu par sa banque/PayPal).
+    onConfirmed();
     return;
   }
 
@@ -487,7 +660,7 @@ async function submitConfirm(e) {
       headers: { Accept: "application/json" },
     });
     if (!res.ok) throw new Error("HTTP " + res.status);
-    showDone();
+    onConfirmed();
   } catch (err) {
     console.error(err);
     submitBtn.disabled = false;
