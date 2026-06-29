@@ -13,9 +13,9 @@
     },
     "bankTransfer": {
       "enabled": true,
-      "accountHolder": "CHANGE_ME (Arthur ...)",
-      "iban": "FR76 XXXX XXXX XXXX XXXX XXXX XXX",
-      "bic": "CHANGE_ME",
+      "accountHolder": "Arthur Carpentier",
+      "iban": "FR76 4061 8804 8300 0406 7369 770",
+      "bic": "",
       "note": "Virement sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
     },
     "stripe": {
