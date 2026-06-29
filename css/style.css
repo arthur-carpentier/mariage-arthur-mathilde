@@ -432,6 +432,7 @@ h1, h2, h3 {
 
 /* ---------- CONFIRM FORM ---------- */
 .confirmform { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 1rem; }
+.confirmform[hidden] { display: none; }
 .confirmform label { display: flex; flex-direction: column; font-weight: 700; gap: 0.35rem; }
 .confirmform label span { color: var(--color-rose); }
 .confirmform input, .confirmform textarea {
