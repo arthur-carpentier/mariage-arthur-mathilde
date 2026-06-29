@@ -8,7 +8,7 @@
   "payment": {
     "paypalMe": {
       "enabled": true,
-      "url": "https://paypal.me/CHANGE_ME",
+      "url": "https://paypal.me/ArthurCarpentier862",
       "note": "Merci de bien sélectionner l'option « Envoyer à un proche / Entre amis et famille » afin d'éviter les frais : nous recevons ainsi 100% de votre cadeau."
     },
     "bankTransfer": {
