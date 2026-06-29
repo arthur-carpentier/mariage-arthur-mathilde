@@ -31,7 +31,45 @@ async function load() {
   renderGifts();
   bindFreeGift();
   bindModal();
+  bindSort();
+  bindShare();
   initDecor();
+}
+
+const state_sort = { value: "default" };
+
+function bindSort() {
+  const sel = document.getElementById("sort");
+  if (!sel) return;
+  sel.addEventListener("change", () => {
+    state_sort.value = sel.value;
+    renderGifts();
+  });
+}
+
+function bindShare() {
+  const btn = document.getElementById("share-btn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    const url = location.href.split("#")[0];
+    const data = {
+      title: "Liste de mariage d'Arthur & Mathilde",
+      text: "Aide-nous à financer notre voyage de noces au Japon 🗾",
+      url,
+    };
+    if (navigator.share) {
+      try { await navigator.share(data); } catch (e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(url);
+        const old = btn.textContent;
+        btn.textContent = "Lien copié ✓";
+        setTimeout(() => (btn.textContent = old), 1800);
+      } catch (e) {
+        window.open("https://wa.me/?text=" + encodeURIComponent(data.text + " " + url), "_blank");
+      }
+    }
+  });
 }
 
 /* ---------- Décor vivant : pétales, parallaxe, apparitions ---------- */
@@ -250,7 +288,7 @@ function renderJourney() {
 }
 
 /* ---------- Séquence « récompense » à la validation d'un cadeau ---------- */
-function celebrate(gift) {
+function celebrate(gift, nom) {
   const before = currentCollected();
   const arr = loadContribs();
   arr.push({ id: gift.id, title: gift.title, amount: Number(gift.amount) || 0, ts: Date.now() });
@@ -260,6 +298,7 @@ function celebrate(gift) {
 
   if (gift.id && gift.id !== "libre") markOffered(gift.id);
   closeModal();
+  showThanks(nom);
 
   const journey = document.getElementById("journey");
   if (!journey) return;
@@ -270,6 +309,12 @@ function celebrate(gift) {
     setJourneyLabel(after, goal);
     return;
   }
+
+  // palier franchi (tous les 5 %)
+  const pctB = goal > 0 ? (before / goal) * 100 : 0;
+  const pctA = goal > 0 ? (after / goal) * 100 : 0;
+  const milestone = Math.floor(pctA / 5) * 5;
+  const crossedMilestone = milestone >= 5 && Math.floor(pctA / 5) > Math.floor(pctB / 5);
 
   // on fige l'état de départ puis on relance la transition vers la nouvelle valeur
   const fill = document.getElementById("journey-fill");
@@ -294,7 +339,37 @@ function celebrate(gift) {
     confettiBurst(journey);
     floatGain(Number(gift.amount) || 0, journey);
     animateNumber(before, after, goal, 1200);
+    // palier fêté : double salve + bannière
+    if (crossedMilestone) {
+      setTimeout(() => {
+        confettiBurst(journey);
+        showMilestone(milestone);
+      }, 700);
+    }
   }, 480); // laisse le scroll « zoomer » sur la barre d'abord
+}
+
+/* Mot de remerciement personnalisé (toast) */
+function showThanks(nom) {
+  const el = document.createElement("div");
+  el.className = "toast toast--thanks";
+  const who = nom ? escapeHtml(nom) : "à vous";
+  el.innerHTML = `<span class="toast__emoji">💛</span><div><strong>Merci ${who} !</strong><br>Votre cadeau fait avancer notre voyage. On a hâte de vous raconter ✨</div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("toast--show"));
+  setTimeout(() => el.classList.remove("toast--show"), 5000);
+  setTimeout(() => el.remove(), 5600);
+}
+
+/* Bannière « palier atteint » */
+function showMilestone(pct) {
+  const el = document.createElement("div");
+  el.className = "milestone";
+  el.textContent = `🎊 ${pct} % du voyage financé !`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("milestone--show"));
+  setTimeout(() => el.classList.remove("milestone--show"), 2200);
+  setTimeout(() => el.remove(), 2800);
 }
 
 function markOffered(id) {
@@ -392,6 +467,16 @@ function applyConfig() {
   $("#couple-subtitle").textContent = c.subtitle || "";
   $("#couple-intro").textContent = c.intro || "";
   $("#couple-date").textContent = c.weddingDate || "";
+
+  // lien infos pratiques (Linktree…)
+  const practical = (state.config.links || {}).practical;
+  ["practical-link", "footer-link"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el && isReal(practical)) {
+      el.href = practical;
+      el.hidden = false;
+    }
+  });
 }
 
 /* ---------- Filtres par catégorie ---------- */
@@ -415,10 +500,12 @@ function renderFilters() {
 /* ---------- Grille de cadeaux ---------- */
 function renderGifts() {
   const grid = $("#gifts");
-  const list =
+  let list =
     state.activeCategory === "Tous"
-      ? state.gifts
+      ? state.gifts.slice()
       : state.gifts.filter((g) => g.category === state.activeCategory);
+  if (state_sort.value === "price-asc") list.sort((a, b) => a.price - b.price);
+  else if (state_sort.value === "price-desc") list.sort((a, b) => b.price - a.price);
 
   grid.innerHTML = "";
   const offered = offeredIds();
@@ -493,6 +580,7 @@ function bindFreeGift() {
 }
 
 /* ---------- Modale ---------- */
+let lastFocused = null;
 function openModal({ title, emoji, amount, id }) {
   state.current = { title, emoji, amount, id };
   $("#modal-emoji").textContent = emoji;
@@ -502,6 +590,10 @@ function openModal({ title, emoji, amount, id }) {
   showStep("pay");
   $("#modal").hidden = false;
   document.body.style.overflow = "hidden";
+  // accessibilité : on mémorise le focus et on place le focus dans la modale
+  lastFocused = document.activeElement;
+  const close = $("#modal").querySelector(".modal__close");
+  if (close) close.focus();
 }
 
 function closeModal() {
@@ -514,6 +606,23 @@ function closeModal() {
   const submitBtn = $("#confirm-form").querySelector('button[type="submit"]');
   submitBtn.disabled = false;
   submitBtn.textContent = "Envoyer 💛";
+  // restaure le focus sur l'élément déclencheur
+  if (lastFocused && lastFocused.focus) lastFocused.focus();
+}
+
+/* piège le focus à l'intérieur de la modale (Tab / Maj+Tab) */
+function trapFocus(e) {
+  const modal = $("#modal");
+  if (modal.hidden || e.key !== "Tab") return;
+  const f = modal.querySelectorAll(
+    'button:not([hidden]), a[href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  const visible = Array.prototype.filter.call(f, (el) => el.offsetParent !== null);
+  if (!visible.length) return;
+  const first = visible[0];
+  const last = visible[visible.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 }
 
 function showStep(step) {
@@ -527,6 +636,7 @@ function bindModal() {
   );
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !$("#modal").hidden) closeModal();
+    trapFocus(e);
   });
   $("#to-confirm").addEventListener("click", () => {
     $("#confirm-gift").value = state.current.title;
@@ -602,9 +712,10 @@ function methodEl({ icon, name, note, action, track }) {
     <div class="paymethod__head"><span class="paymethod__icon">${icon}</span><strong>${name}</strong></div>
     ${note ? `<p class="paymethod__note">${escapeHtml(note)}</p>` : ""}
     <div>${action}</div>`;
-  // mémorise le moyen choisi pour le formulaire de confirmation
+  // pré-coche le moyen choisi dans le formulaire de confirmation
   el.addEventListener("click", () => {
-    $("#confirm-method").value = track;
+    const radio = document.querySelector(`input[name="moyen"][value="${track}"]`);
+    if (radio) radio.checked = true;
   });
   return el;
 }
@@ -634,10 +745,11 @@ async function submitConfirm(e) {
   submitBtn.disabled = true;
   submitBtn.textContent = "Envoi…";
 
+  const nom = (form.querySelector('[name="nom"]') || {}).value || "";
   const onConfirmed = () => {
     submitBtn.disabled = false;
     submitBtn.textContent = "Envoyer 💛";
-    celebrate(state.current);
+    celebrate(state.current, nom.trim());
   };
 
   if (!cfg.enabled || !isReal(cfg.formEndpoint)) {
