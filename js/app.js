@@ -398,6 +398,8 @@ async function submitConfirm(e) {
   const showDone = () => {
     $("#confirm-form").hidden = true;
     $("#confirm-done").hidden = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Envoyer 💛";
   };
 
   if (!cfg.enabled || !isReal(cfg.formEndpoint)) {
