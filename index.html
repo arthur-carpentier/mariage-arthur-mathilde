@@ -5,6 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Arthur & Mathilde — Liste de mariage</title>
   <meta name="description" content="Liste de mariage d'Arthur & Mathilde : offrez-nous une étape de notre voyage de noces au Japon 🗾" />
+  <!-- Aperçu social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Liste de mariage d'Arthur & Mathilde" />
+  <meta property="og:description" content="Offrez-nous une étape de notre voyage de noces au Japon 🗾 — avril–mai." />
+  <meta property="og:image" content="https://arthur-carpentier.github.io/mariage-arthur-mathilde/assets/og-image.png" />
+  <meta property="og:url" content="https://arthur-carpentier.github.io/mariage-arthur-mathilde/" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Liste de mariage d'Arthur & Mathilde" />
+  <meta name="twitter:description" content="Offrez-nous une étape de notre voyage de noces au Japon 🗾" />
+  <meta name="twitter:image" content="https://arthur-carpentier.github.io/mariage-arthur-mathilde/assets/og-image.png" />
+  <meta name="theme-color" content="#B05078" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -93,6 +107,7 @@
   <main>
     <section class="intro">
       <p id="couple-intro"></p>
+      <a class="btn btn--ghost practical__link" id="practical-link" href="#" target="_blank" rel="noopener" hidden>📋 Toutes les infos pratiques du mariage</a>
     </section>
 
     <div class="wave-divider" aria-hidden="true"></div>
@@ -109,9 +124,19 @@
         <div class="journey__country journey__country--jp" aria-hidden="true"></div>
       </div>
       <p class="journey__label" id="journey-label"></p>
+      <button type="button" class="btn btn--ghost journey__share" id="share-btn">🔗 Partager la cagnotte</button>
     </section>
 
     <section class="filters" id="filters" aria-label="Filtrer par catégorie"></section>
+
+    <div class="sortbar">
+      <label for="sort">Trier&nbsp;:</label>
+      <select id="sort" aria-label="Trier les cadeaux">
+        <option value="default">Suggestions</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+      </select>
+    </div>
 
     <section class="gifts" id="gifts" aria-live="polite">
       <p class="gifts__loading">Chargement des idées de cadeaux… 🎁</p>
@@ -142,6 +167,7 @@
   </main>
 
   <footer class="footer">
+    <p><a class="footer__link" id="footer-link" href="#" target="_blank" rel="noopener" hidden>📋 Infos pratiques du mariage</a></p>
     <p>Fait avec 💛 pour le mariage d'Arthur &amp; Mathilde</p>
   </footer>
 
@@ -180,9 +206,15 @@
           <label>Un petit message (optionnel)
             <textarea name="message" rows="3" placeholder="Tous nos vœux de bonheur..."></textarea>
           </label>
+          <fieldset class="payradio">
+            <legend>Comment avez-vous payé ?</legend>
+            <label><input type="radio" name="moyen" value="PayPal" /> 🅿️ PayPal</label>
+            <label><input type="radio" name="moyen" value="Virement" /> 🏦 Virement</label>
+            <label><input type="radio" name="moyen" value="Stripe" /> 💳 Carte</label>
+            <label><input type="radio" name="moyen" value="Autre" /> ✨ Autre</label>
+          </fieldset>
           <input type="hidden" name="cadeau" id="confirm-gift" />
           <input type="hidden" name="montant" id="confirm-amount" />
-          <input type="hidden" name="moyen" id="confirm-method" />
           <button type="submit" class="btn btn--primary">Envoyer 💛</button>
         </form>
         <div class="confirmform__done" id="confirm-done" hidden>
