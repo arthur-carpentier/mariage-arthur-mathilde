@@ -66,9 +66,15 @@ function initIntro() {
 function leaveIntro(intro, reduce) {
   try { sessionStorage.setItem("am_entered", "1"); } catch (e) {}
   if (reduce) { finishIntro(intro); return; }
+  const heroTorii = document.querySelector(".hero__torii");
+  const heroTitle = document.getElementById("couple-names");
   // les éléments partagés volent vers leur position finale dans le hero
-  flipTo(document.getElementById("intro-torii"), document.querySelector(".hero__torii"), 0.22);
-  flipTo(document.getElementById("intro-title"), document.getElementById("couple-names"), 1);
+  // (flipTo mesure la cible AVANT qu'on la masque)
+  flipTo(document.getElementById("intro-torii"), heroTorii, 0.22);
+  flipTo(document.getElementById("intro-title"), heroTitle, 1);
+  // on masque les éléments du hero pendant le vol pour éviter toute superposition
+  if (heroTorii) heroTorii.style.opacity = "0";
+  if (heroTitle) heroTitle.style.visibility = "hidden";
   document.getElementById("intro-torii").classList.add("fly");
   document.getElementById("intro-title").classList.add("fly");
   intro.classList.add("welcome--leaving");
@@ -76,6 +82,11 @@ function leaveIntro(intro, reduce) {
 }
 
 function finishIntro(intro) {
+  // on redonne la main aux éléments du hero (à l'endroit exact où le vol s'achève)
+  const heroTorii = document.querySelector(".hero__torii");
+  const heroTitle = document.getElementById("couple-names");
+  if (heroTorii) heroTorii.style.opacity = "";
+  if (heroTitle) heroTitle.style.visibility = "";
   intro.remove();
   document.body.classList.remove("intro-open");
 }
