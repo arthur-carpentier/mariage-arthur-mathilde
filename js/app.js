@@ -213,13 +213,10 @@ function insetCalc(pct) {
   return `calc(${COUPLE_INSET}px + (100% - ${2 * COUPLE_INSET}px) * ${pct / 100})`;
 }
 function setJourneyLabel(collected, goal) {
-  const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
   const label = $("#journey-label");
   if (label) {
     label.innerHTML =
-      `💞 Déjà <strong>${formatPrice(collected)}</strong> réunis sur ` +
-      `<strong>${formatPrice(goal)}</strong> — ` +
-      `<span class="pct">${Math.round(pct)} %</span> du voyage financé`;
+      `💞 Déjà <strong>${formatPrice(collected)}</strong> réunis sur <strong>${formatPrice(goal)}</strong>`;
   }
 }
 function setJourneyBar(collected, goal) {

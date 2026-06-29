@@ -193,17 +193,26 @@ h1, h2, h3 {
 }
 .journey__couple {
   position: absolute;
-  top: 50%;
+  top: 0;
   left: 0;
-  transform: translate(-50%, -62%);
-  font-size: clamp(1.5rem, 5vw, 2rem);
+  transform: translate(-50%, calc(-100% - 5px));
+  font-size: clamp(1.35rem, 4.5vw, 1.85rem);
   white-space: nowrap;
   filter: drop-shadow(0 3px 4px rgba(52, 82, 106, 0.25));
   transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.journey__label { margin: 1.25rem 0 0; font-size: 1.1rem; }
+/* petit repère qui pointe la position exacte sur la jauge */
+.journey__couple::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-rose);
+}
+.journey__label { margin: 1.5rem 0 0; font-size: 1.1rem; }
 .journey__label strong { color: var(--color-rose); }
-.journey__label .pct { color: var(--color-blue); }
 
 /* ---------- FILTERS ---------- */
 .filters {
