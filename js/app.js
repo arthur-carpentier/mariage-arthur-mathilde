@@ -51,27 +51,15 @@ function renderJourney() {
       `<span class="pct">${Math.round(pct)} %</span> du voyage financé ✈️`;
   }
 
-  const route = document.getElementById("route-fg");
+  const fill = document.getElementById("journey-fill");
   const couple = document.getElementById("journey-couple");
-  if (!route || !couple) return;
-  const total = route.getTotalLength();
+  if (!fill || !couple) return;
 
-  // animation douce de 0 % jusqu'à la valeur cible
-  const duration = 1400;
-  let start = null;
-  const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic
-
-  function frame(ts) {
-    if (start === null) start = ts;
-    const t = Math.min(1, (ts - start) / duration);
-    const cur = pct * ease(t);
-    route.setAttribute("stroke-dashoffset", String(100 - cur));
-    const point = route.getPointAtLength((total * cur) / 100);
-    couple.setAttribute("x", point.x);
-    couple.setAttribute("y", point.y - 4); // posé au-dessus du tracé
-    if (t < 1) requestAnimationFrame(frame);
-  }
-  requestAnimationFrame(frame);
+  // on part de 0 puis on anime vers la cible (transition CSS sur width/left)
+  requestAnimationFrame(() => {
+    fill.style.width = pct + "%";
+    couple.style.left = pct + "%";
+  });
 }
 
 /* ---------- Textes du couple ---------- */

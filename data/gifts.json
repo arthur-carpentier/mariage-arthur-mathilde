@@ -1,128 +1,317 @@
 {
   "gifts": [
     {
-      "id": "vols",
+      "id": "vols-paris-tokyo",
       "emoji": "✈️",
-      "title": "Les billets d'avion",
-      "description": "Paris → Tokyo, le grand départ ! Aidez-nous à nous envoler vers le pays du soleil levant.",
-      "price": 1200,
+      "title": "Les billets d'avion Paris ⇄ Tokyo",
+      "description": "Le grand départ, pour nous deux : l'aller-retour vers le pays du soleil levant.",
+      "price": 2200,
       "category": "Transport",
       "image": ""
     },
     {
-      "id": "jrpass",
+      "id": "jr-pass",
       "emoji": "🚄",
-      "title": "Le Japan Rail Pass",
-      "description": "7 jours de Shinkansen illimité pour sillonner le pays à 300 km/h, de Tokyo à Kyoto.",
-      "price": 320,
+      "title": "Le Japan Rail Pass 21 jours (x2)",
+      "description": "Trois semaines de Shinkansen illimité pour sillonner l'archipel à 300 km/h.",
+      "price": 1000,
       "category": "Transport",
       "image": ""
     },
     {
-      "id": "hotel-tokyo",
-      "emoji": "🏙️",
-      "title": "3 nuits à Tokyo",
-      "description": "Un hôtel au cœur de Shinjuku pour s'émerveiller devant les néons et la ville qui ne dort jamais.",
+      "id": "vols-interieurs",
+      "emoji": "🛫",
+      "title": "Les vols intérieurs",
+      "description": "Tokyo → Sapporo, Osaka → Okinawa : pour relier le nord d'Hokkaidō aux îles du sud.",
+      "price": 800,
+      "category": "Transport",
+      "image": ""
+    },
+    {
+      "id": "location-voiture",
+      "emoji": "🚗",
+      "title": "La location de voiture",
+      "description": "Pour explorer librement la campagne d'Hokkaidō et les routes côtières.",
+      "price": 450,
+      "category": "Transport",
+      "image": ""
+    },
+    {
+      "id": "ferries",
+      "emoji": "🛳️",
+      "title": "Les ferries vers les îles",
+      "description": "Traverser les mers intérieures pour rejoindre Miyajima, Naoshima et les petites îles.",
+      "price": 250,
+      "category": "Transport",
+      "image": ""
+    },
+    {
+      "id": "tokyo",
+      "emoji": "🗼",
+      "title": "6 nuits à Tokyo",
+      "description": "Au cœur de Shinjuku, pour s'émerveiller devant les néons d'une ville qui ne dort jamais.",
+      "price": 1300,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "hakone",
+      "emoji": "♨️",
+      "title": "Ryokan & onsen à Hakone (2 nuits)",
+      "description": "Bains thermaux et vue sur le Mont Fuji, dans une auberge traditionnelle.",
+      "price": 900,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "koya",
+      "emoji": "⛩️",
+      "title": "Nuit au temple, Mont Kōya (2 nuits)",
+      "description": "Un shukubo : dormir chez les moines, méditer et partager la cuisine bouddhiste.",
+      "price": 500,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "kyoto-ryokan",
+      "emoji": "🏯",
+      "title": "Ryokan traditionnel à Kyoto (5 nuits)",
+      "description": "Tatamis, futons et jardin zen, au cœur de l'ancienne capitale impériale.",
+      "price": 1600,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "osaka",
+      "emoji": "🌃",
+      "title": "4 nuits à Osaka",
+      "description": "La capitale de la street food, base idéale pour rayonner dans le Kansai.",
+      "price": 800,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "kanazawa",
+      "emoji": "🎎",
+      "title": "3 nuits à Kanazawa",
+      "description": "Jardins, geishas et artisanat : le Japon raffiné de la côte de la mer du Japon.",
+      "price": 500,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "takayama",
+      "emoji": "🏔️",
+      "title": "3 nuits à Takayama (Alpes japonaises)",
+      "description": "Villages de montagne aux maisons centenaires, au cœur des Alpes du Japon.",
+      "price": 500,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "hiroshima",
+      "emoji": "🕊️",
+      "title": "3 nuits à Hiroshima",
+      "description": "Ville de mémoire et de paix, porte d'entrée vers l'île sacrée de Miyajima.",
       "price": 450,
       "category": "Hébergement",
       "image": ""
     },
     {
-      "id": "ryokan-kyoto",
-      "emoji": "🏯",
-      "title": "Une nuit en ryokan à Kyoto",
-      "description": "Auberge traditionnelle avec tatamis, futon et bain onsen privatif. L'expérience japonaise par excellence.",
-      "price": 280,
+      "id": "sapporo",
+      "emoji": "🌲",
+      "title": "5 nuits à Sapporo (Hokkaidō)",
+      "description": "Le grand nord sauvage : nature, volcans et la meilleure bière du Japon.",
+      "price": 950,
       "category": "Hébergement",
       "image": ""
     },
     {
-      "id": "hotel-osaka",
-      "emoji": "🌃",
-      "title": "3 nuits à Osaka",
-      "description": "La capitale de la street food ! De quoi se poser entre deux festins de takoyaki.",
-      "price": 390,
+      "id": "okinawa-sejour",
+      "emoji": "🏝️",
+      "title": "6 nuits à Okinawa",
+      "description": "Eaux turquoise et plages de sable blanc, pour clôturer le voyage en douceur.",
+      "price": 1250,
       "category": "Hébergement",
       "image": ""
     },
     {
-      "id": "sushi",
+      "id": "capsule",
+      "emoji": "🛏️",
+      "title": "Une nuit en hôtel capsule",
+      "description": "L'expérience insolite et futuriste d'une nuit dans une capsule japonaise.",
+      "price": 100,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "auberges",
+      "emoji": "🧳",
+      "title": "Auberges & étapes diverses",
+      "description": "Toutes les petites nuits d'étape entre deux grandes villes, au fil de la route.",
+      "price": 300,
+      "category": "Hébergement",
+      "image": ""
+    },
+    {
+      "id": "omakase",
       "emoji": "🍣",
-      "title": "Un dîner gastronomique de sushis",
-      "description": "Un omakase d'exception au comptoir, préparé sous nos yeux par un maître sushi.",
-      "price": 180,
+      "title": "Un omakase au comptoir",
+      "description": "Le grand jeu : des sushis d'exception préparés sous nos yeux par un maître.",
+      "price": 250,
       "category": "Gastronomie",
       "image": ""
     },
     {
-      "id": "ramen-tour",
+      "id": "wagyu",
+      "emoji": "🥩",
+      "title": "Un dîner de bœuf wagyu de Kobe",
+      "description": "La viande la plus persillée du monde, fondante à souhait.",
+      "price": 220,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "kaiseki",
+      "emoji": "🥢",
+      "title": "Un kaiseki à Kyoto",
+      "description": "La haute gastronomie japonaise : un menu raffiné au rythme des saisons.",
+      "price": 300,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "crabe-hokkaido",
+      "emoji": "🦀",
+      "title": "Un festin de crabe royal à Hokkaidō",
+      "description": "Le crabe géant du nord, spécialité des mers froides de l'île.",
+      "price": 200,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "cours-cuisine",
+      "emoji": "🍱",
+      "title": "Un cours de cuisine japonaise",
+      "description": "Apprendre à rouler des sushis et préparer un vrai bento pour le ramener à la maison.",
+      "price": 150,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "ramen-streetfood",
       "emoji": "🍜",
-      "title": "Tournée des ramens",
-      "description": "Une journée à dénicher les meilleurs bols de ramen dans les ruelles de la ville.",
-      "price": 60,
+      "title": "Tournée des ramen & street food",
+      "description": "Des ruelles de Tokyo au Dotonbori d'Osaka : ramen, takoyaki, okonomiyaki...",
+      "price": 130,
       "category": "Gastronomie",
       "image": ""
     },
     {
       "id": "the-matcha",
       "emoji": "🍵",
-      "title": "Cérémonie du thé matcha",
-      "description": "Une parenthèse zen pour découvrir le rituel ancestral du thé dans un jardin de Kyoto.",
-      "price": 80,
-      "category": "Culture",
+      "title": "Une cérémonie du thé matcha",
+      "description": "Le rituel ancestral du thé, dans la quiétude d'un jardin de Kyoto.",
+      "price": 100,
+      "category": "Gastronomie",
       "image": ""
     },
     {
-      "id": "plongee",
+      "id": "sake",
+      "emoji": "🍶",
+      "title": "Une dégustation de saké",
+      "description": "Visite d'une brasserie traditionnelle et dégustation des meilleurs crus.",
+      "price": 100,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "repas-quotidien",
+      "emoji": "🍙",
+      "title": "Nos repas du quotidien (2 mois)",
+      "description": "Tous les petits-déjeuners, déjeuners et dîners du voyage. Le carburant des aventuriers !",
+      "price": 1105,
+      "category": "Gastronomie",
+      "image": ""
+    },
+    {
+      "id": "plongee-okinawa",
       "emoji": "🤿",
       "title": "Plongée sous-marine à Okinawa",
-      "description": "Explorer les récifs coralliens et les eaux turquoise des îles du sud du Japon.",
-      "price": 220,
+      "description": "Explorer les récifs coralliens et les eaux cristallines des îles du sud.",
+      "price": 300,
       "category": "Aventure",
       "image": ""
     },
     {
-      "id": "fuji",
+      "id": "mont-fuji",
       "emoji": "🗻",
-      "title": "Excursion au Mont Fuji",
-      "description": "Une journée face au sommet mythique du Japon, entre lacs et sources chaudes.",
-      "price": 150,
+      "title": "L'ascension du Mont Fuji",
+      "description": "Gravir de nuit le sommet sacré pour voir le lever du soleil depuis le toit du Japon.",
+      "price": 200,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "ski-niseko",
+      "emoji": "🎿",
+      "title": "Ski à Niseko (Hokkaidō)",
+      "description": "La meilleure poudreuse du monde, sur les pentes du nord du Japon.",
+      "price": 650,
       "category": "Aventure",
       "image": ""
     },
     {
       "id": "kimono",
       "emoji": "👘",
-      "title": "Journée en kimono",
-      "description": "Se vêtir de kimonos traditionnels et déambuler dans les quartiers historiques de Kyoto.",
+      "title": "Une journée en kimono à Kyoto",
+      "description": "Se vêtir de kimonos traditionnels et déambuler dans les ruelles d'Higashiyama.",
       "price": 90,
       "category": "Culture",
       "image": ""
     },
     {
-      "id": "onsen",
-      "emoji": "♨️",
-      "title": "Une journée aux onsen",
-      "description": "Détente absolue dans les bains thermaux volcaniques, au milieu de la nature.",
-      "price": 70,
-      "category": "Détente",
-      "image": ""
-    },
-    {
-      "id": "sakura",
-      "emoji": "🌸",
-      "title": "Pique-nique sous les cerisiers",
-      "description": "Un hanami : célébrer la floraison des sakura, un panier garni sous les pétales roses.",
-      "price": 50,
-      "category": "Détente",
-      "image": ""
-    },
-    {
-      "id": "torii",
+      "id": "fushimi-inari",
       "emoji": "⛩️",
       "title": "Les mille torii de Fushimi Inari",
       "description": "Gravir la montagne sacrée à travers des milliers de portails vermillon.",
       "price": 40,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "singes-neiges",
+      "emoji": "🐒",
+      "title": "Les singes des neiges de Jigokudani",
+      "description": "Observer les macaques se prélasser dans les bains chauds en pleine montagne.",
+      "price": 80,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "nara",
+      "emoji": "🦌",
+      "title": "Nara et ses daims",
+      "description": "Une journée parmi les daims en liberté et les temples géants de l'ancienne capitale.",
+      "price": 60,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "sumo",
+      "emoji": "🥋",
+      "title": "Un tournoi de sumo",
+      "description": "Vibrer dans l'arène devant les colosses du sport national japonais.",
+      "price": 160,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "teamlab",
+      "emoji": "🎨",
+      "title": "teamLab, musée numérique à Tokyo",
+      "description": "Se perdre dans des salles d'art immersif et de lumières infinies.",
+      "price": 90,
       "category": "Culture",
       "image": ""
     },
@@ -133,6 +322,96 @@
       "description": "Chanter à tue-tête jusqu'au bout de la nuit, comme de vrais Tokyoïtes !",
       "price": 45,
       "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "hanami",
+      "emoji": "🌸",
+      "title": "Un hanami sous les cerisiers",
+      "description": "Pique-niquer sous les sakura en fleurs, un panier garni sous les pétales roses.",
+      "price": 50,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "matsuri",
+      "emoji": "🎏",
+      "title": "Un festival traditionnel (matsuri)",
+      "description": "Lanternes, yukatas et stands de rue : plonger dans la ferveur d'un festival local.",
+      "price": 80,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "miyajima",
+      "emoji": "⛩️",
+      "title": "Miyajima et son torii flottant",
+      "description": "L'île sacrée et son célèbre portail rouge posé sur la mer.",
+      "price": 100,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "churaumi",
+      "emoji": "🐋",
+      "title": "L'aquarium Churaumi (Okinawa)",
+      "description": "Face aux requins-baleines géants, l'un des plus beaux aquariums du monde.",
+      "price": 70,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "kumano-kodo",
+      "emoji": "🥾",
+      "title": "Le pèlerinage du Kumano Kodō (3 jours)",
+      "description": "Une randonnée sur les chemins sacrés millénaires, de temple en source chaude.",
+      "price": 500,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "shimanami",
+      "emoji": "🚲",
+      "title": "La Shimanami Kaidō à vélo",
+      "description": "Pédaler d'île en île sur la plus belle véloroute du Japon, au-dessus de la mer.",
+      "price": 130,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "croisiere-tokyo",
+      "emoji": "🚢",
+      "title": "Une croisière dans la baie de Tokyo",
+      "description": "Dîner au fil de l'eau face aux gratte-ciels illuminés.",
+      "price": 350,
+      "category": "Détente",
+      "image": ""
+    },
+    {
+      "id": "helico-tokyo",
+      "emoji": "🚁",
+      "title": "Un survol de Tokyo en hélicoptère",
+      "description": "La mégapole et le Mont Fuji vus du ciel, un souvenir inoubliable.",
+      "price": 450,
+      "category": "Aventure",
+      "image": ""
+    },
+    {
+      "id": "akihabara",
+      "emoji": "🎮",
+      "title": "Akihabara & la pop culture",
+      "description": "Salles d'arcade, mangas et gadgets dans le quartier électrique de Tokyo.",
+      "price": 60,
+      "category": "Culture",
+      "image": ""
+    },
+    {
+      "id": "nature-grues",
+      "emoji": "🦢",
+      "title": "Observation de la nature",
+      "description": "Grues de Hokkaidō, parcs nationaux et grands espaces : le Japon sauvage.",
+      "price": 90,
+      "category": "Aventure",
       "image": ""
     }
   ]

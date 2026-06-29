@@ -29,14 +29,13 @@
     <section class="journey" id="journey" aria-label="Progression de la cagnotte">
       <h2 class="journey__title">Notre cagnotte voyage ✈️</h2>
       <p class="journey__sub">De la France 🇫🇷 jusqu'au Japon 🇯🇵</p>
-      <div class="journey__map">
+      <div class="journey__bar">
         <div class="journey__country journey__country--fr" aria-hidden="true"></div>
+        <div class="journey__track">
+          <div class="journey__fill" id="journey-fill"></div>
+          <div class="journey__couple" id="journey-couple" aria-hidden="true">👰🤵</div>
+        </div>
         <div class="journey__country journey__country--jp" aria-hidden="true"></div>
-        <svg class="journey__route" viewBox="0 0 100 46" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-          <path id="route-bg" d="M 13 36 Q 50 4 87 36" fill="none" stroke="var(--color-blue-light)" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="2.4 2.6" />
-          <path id="route-fg" d="M 13 36 Q 50 4 87 36" fill="none" stroke="var(--color-rose)" stroke-width="1.8" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100" />
-          <text id="journey-couple" font-size="8" text-anchor="middle" dominant-baseline="central" x="13" y="36">👰🤵</text>
-        </svg>
       </div>
       <p class="journey__label" id="journey-label"></p>
     </section>

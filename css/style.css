@@ -87,41 +87,60 @@ h1, h2, h3 {
   box-shadow: var(--shadow);
 }
 .journey__title { font-size: clamp(1.4rem, 4vw, 1.9rem); }
-.journey__sub { margin: 0.25rem 0 0.5rem; color: var(--color-green); font-weight: 700; }
-.journey__map {
-  position: relative;
+.journey__sub { margin: 0.25rem 0 1.5rem; color: var(--color-green); font-weight: 700; }
+.journey__bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2.5vw, 1.1rem);
   width: 100%;
-  margin: 0.5rem auto 0.25rem;
 }
-.journey__route { width: 100%; height: auto; display: block; overflow: visible; }
-#journey-couple { transition: none; }
 .journey__country {
-  position: absolute;
-  bottom: 8%;
-  width: 26%;
-  aspect-ratio: 1 / 1;
-  opacity: 0.85;
+  flex: none;
+  width: clamp(54px, 13vw, 84px);
+  height: clamp(54px, 13vw, 84px);
+  opacity: 0.9;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  -webkit-mask-position: center bottom;
-  mask-position: center bottom;
+  -webkit-mask-position: center;
+  mask-position: center;
   -webkit-mask-size: contain;
   mask-size: contain;
-  pointer-events: none;
 }
 .journey__country--fr {
-  left: -1%;
   background-color: var(--color-blue);
   -webkit-mask-image: url('../assets/france.svg');
   mask-image: url('../assets/france.svg');
 }
 .journey__country--jp {
-  right: -1%;
   background-color: var(--color-rose);
   -webkit-mask-image: url('../assets/japan.svg');
   mask-image: url('../assets/japan.svg');
 }
-.journey__label { margin: 0.75rem 0 0; font-size: 1.1rem; }
+.journey__track {
+  position: relative;
+  flex: 1;
+  height: 16px;
+  background: var(--color-blue-light);
+  border-radius: 999px;
+}
+.journey__fill {
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-green), var(--color-rose));
+  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.journey__couple {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -62%);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  white-space: nowrap;
+  filter: drop-shadow(0 3px 4px rgba(52, 82, 106, 0.25));
+  transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.journey__label { margin: 1.25rem 0 0; font-size: 1.1rem; }
 .journey__label strong { color: var(--color-rose); }
 .journey__label .pct { color: var(--color-blue); }
 
