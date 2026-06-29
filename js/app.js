@@ -156,10 +156,6 @@ function applyConfig() {
   $("#couple-subtitle").textContent = c.subtitle || "";
   $("#couple-intro").textContent = c.intro || "";
   $("#couple-date").textContent = c.weddingDate || "";
-  if (c.marker) {
-    const m = document.getElementById("journey-couple");
-    if (m) m.textContent = c.marker;
-  }
 }
 
 /* ---------- Filtres par catégorie ---------- */
