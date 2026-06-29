@@ -195,22 +195,12 @@ h1, h2, h3 {
   position: absolute;
   top: 50%;
   left: 0;
-  transform: translate(-50%, -56%);
-  display: flex;
-  align-items: flex-end;
+  transform: translate(-50%, -62%);
+  font-size: clamp(1.5rem, 5vw, 2rem);
   white-space: nowrap;
   filter: drop-shadow(0 3px 4px rgba(52, 82, 106, 0.25));
   transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.journey__avatar {
-  width: clamp(38px, 11vw, 52px);
-  height: clamp(38px, 11vw, 52px);
-  border-radius: 50%;
-  background: var(--color-white);
-  border: 2.5px solid var(--color-white);
-  box-shadow: 0 1px 3px rgba(52, 82, 106, 0.25);
-}
-.journey__avatar:last-child { margin-left: -14px; }
 .journey__label { margin: 1.25rem 0 0; font-size: 1.1rem; }
 .journey__label strong { color: var(--color-rose); }
 .journey__label .pct { color: var(--color-blue); }
