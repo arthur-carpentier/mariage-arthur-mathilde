@@ -42,12 +42,60 @@ function prefersReducedMotion() {
 function initDecor() {
   initReveal();
   if (prefersReducedMotion()) return;
-  spawnPetals(22);
+  spawnPetals($("#petals"), 22);
   initParallax();
 }
 
-function spawnPetals(count) {
-  const layer = $("#petals");
+/* ---------- Écran d'accueil + transition « élément partagé » ---------- */
+function initIntro() {
+  const intro = document.getElementById("intro");
+  if (!intro) return;
+  let entered = false;
+  try { entered = sessionStorage.getItem("am_entered") === "1"; } catch (e) {}
+  if (entered) { intro.remove(); return; }
+
+  document.body.classList.add("intro-open");
+  const reduce = prefersReducedMotion();
+  if (reduce) intro.classList.add("welcome--noanim");
+  else spawnPetals(document.getElementById("intro-petals"), 16);
+
+  const enter = document.getElementById("intro-enter");
+  if (enter) enter.addEventListener("click", () => leaveIntro(intro, reduce), { once: true });
+}
+
+function leaveIntro(intro, reduce) {
+  try { sessionStorage.setItem("am_entered", "1"); } catch (e) {}
+  if (reduce) { finishIntro(intro); return; }
+  // les éléments partagés volent vers leur position finale dans le hero
+  flipTo(document.getElementById("intro-torii"), document.querySelector(".hero__torii"), 0.22);
+  flipTo(document.getElementById("intro-title"), document.getElementById("couple-names"), 1);
+  document.getElementById("intro-torii").classList.add("fly");
+  document.getElementById("intro-title").classList.add("fly");
+  intro.classList.add("welcome--leaving");
+  setTimeout(() => finishIntro(intro), 1150);
+}
+
+function finishIntro(intro) {
+  intro.remove();
+  document.body.classList.remove("intro-open");
+}
+
+function flipTo(el, target, endOpacity) {
+  if (!el || !target) return;
+  const a = el.getBoundingClientRect();
+  const b = target.getBoundingClientRect();
+  const dx = b.left + b.width / 2 - (a.left + a.width / 2);
+  const dy = b.top + b.height / 2 - (a.top + a.height / 2);
+  const scale = a.width ? b.width / a.width : 1;
+  el.style.transformOrigin = "center center";
+  el.style.transition = "transform 1s cubic-bezier(0.66, 0, 0.2, 1), opacity 1s ease";
+  requestAnimationFrame(() => {
+    el.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+    if (endOpacity != null) el.style.opacity = endOpacity;
+  });
+}
+
+function spawnPetals(layer, count) {
   if (!layer) return;
   for (let i = 0; i < count; i++) {
     const p = document.createElement("div");
@@ -445,4 +493,5 @@ function escapeHtml(str) {
   );
 }
 
+initIntro();
 load();
