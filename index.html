@@ -12,8 +12,27 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
 </head>
 <body>
-  <header class="hero">
+  <header class="hero" id="hero">
+    <div class="hero__petals" id="petals" aria-hidden="true"></div>
+
+    <svg class="hero__branch hero__branch--left" viewBox="0 0 200 160" aria-hidden="true">
+      <use href="#sakura-branch" />
+    </svg>
+    <svg class="hero__branch hero__branch--right" viewBox="0 0 200 160" aria-hidden="true">
+      <use href="#sakura-branch" />
+    </svg>
+
     <div class="hero__inner">
+      <svg class="hero__torii" viewBox="0 0 240 230" aria-hidden="true">
+        <g fill="currentColor">
+          <path d="M6 34 C18 16 40 22 52 24 L188 24 C200 22 222 16 234 34 L230 45 C220 31 205 35 192 35 L48 35 C35 35 20 31 10 45 Z"/>
+          <path d="M44 45 L196 45 L196 57 L44 57 Z"/>
+          <path d="M114 57 L126 57 L126 96 L114 96 Z"/>
+          <path d="M34 88 L206 88 L206 105 L34 105 Z"/>
+          <path d="M44 57 L63 57 L57 219 L33 219 Z"/>
+          <path d="M177 57 L196 57 L207 219 L183 219 Z"/>
+        </g>
+      </svg>
       <p class="hero__kicker">⛩️ Notre liste de mariage ⛩️</p>
       <h1 class="hero__title" id="couple-names">Arthur &amp; Mathilde</h1>
       <p class="hero__subtitle" id="couple-subtitle"></p>
@@ -21,10 +40,39 @@
     </div>
   </header>
 
+  <!-- définitions SVG réutilisables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="blossom">
+        <g fill="var(--color-rose-light)" stroke="var(--color-rose)" stroke-width="0.6">
+          <ellipse cx="0" cy="-5.2" rx="3" ry="5"/>
+          <ellipse cx="0" cy="-5.2" rx="3" ry="5" transform="rotate(72)"/>
+          <ellipse cx="0" cy="-5.2" rx="3" ry="5" transform="rotate(144)"/>
+          <ellipse cx="0" cy="-5.2" rx="3" ry="5" transform="rotate(216)"/>
+          <ellipse cx="0" cy="-5.2" rx="3" ry="5" transform="rotate(288)"/>
+        </g>
+        <circle r="1.8" fill="var(--color-rose)"/>
+      </g>
+      <g id="sakura-branch">
+        <path d="M2 8 C50 18 90 40 120 78 C140 104 160 128 196 150" fill="none" stroke="var(--color-pine,#4E7A60)" stroke-width="4" stroke-linecap="round"/>
+        <path d="M60 24 C72 20 84 26 96 22" fill="none" stroke="var(--color-pine,#4E7A60)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M120 78 C128 66 142 60 150 48" fill="none" stroke="var(--color-pine,#4E7A60)" stroke-width="2.5" stroke-linecap="round"/>
+        <use href="#blossom" transform="translate(20 11) scale(1.1)"/>
+        <use href="#blossom" transform="translate(58 22) scale(0.9)"/>
+        <use href="#blossom" transform="translate(96 22) scale(1.2)"/>
+        <use href="#blossom" transform="translate(120 78) scale(1)"/>
+        <use href="#blossom" transform="translate(150 47) scale(0.85)"/>
+        <use href="#blossom" transform="translate(168 122) scale(1.1)"/>
+      </g>
+    </defs>
+  </svg>
+
   <main>
     <section class="intro">
       <p id="couple-intro"></p>
     </section>
+
+    <div class="wave-divider" aria-hidden="true"></div>
 
     <section class="journey" id="journey" aria-label="Progression de la cagnotte">
       <h2 class="journey__title">Notre cagnotte voyage ✈️</h2>
@@ -33,7 +81,7 @@
         <div class="journey__country journey__country--fr" aria-hidden="true"></div>
         <div class="journey__track">
           <div class="journey__fill" id="journey-fill"></div>
-          <div class="journey__couple" id="journey-couple" aria-hidden="true">👰🤵</div>
+          <div class="journey__couple" id="journey-couple" aria-hidden="true">👰🏻‍♀️🤵🏻‍♂️</div>
         </div>
         <div class="journey__country journey__country--jp" aria-hidden="true"></div>
       </div>
@@ -45,6 +93,8 @@
     <section class="gifts" id="gifts" aria-live="polite">
       <p class="gifts__loading">Chargement des idées de cadeaux… 🎁</p>
     </section>
+
+    <div class="wave-divider" aria-hidden="true"></div>
 
     <section class="freegift">
       <div class="freegift__card">
