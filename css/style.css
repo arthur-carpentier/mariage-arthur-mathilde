@@ -75,6 +75,56 @@ h1, h2, h3 {
   font-size: 1.15rem;
 }
 
+/* ---------- JOURNEY / CAGNOTTE ---------- */
+.journey {
+  max-width: 760px;
+  margin: 0 auto clamp(2.5rem, 6vw, 4rem);
+  padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1.25rem, 4vw, 2.5rem);
+  text-align: center;
+  background: var(--color-white);
+  border: 1px solid var(--color-blue-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.journey__title { font-size: clamp(1.4rem, 4vw, 1.9rem); }
+.journey__sub { margin: 0.25rem 0 0.5rem; color: var(--color-green); font-weight: 700; }
+.journey__map {
+  position: relative;
+  width: 100%;
+  margin: 0.5rem auto 0.25rem;
+}
+.journey__route { width: 100%; height: auto; display: block; overflow: visible; }
+#journey-couple { transition: none; }
+.journey__country {
+  position: absolute;
+  bottom: 8%;
+  width: 26%;
+  aspect-ratio: 1 / 1;
+  opacity: 0.85;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  pointer-events: none;
+}
+.journey__country--fr {
+  left: -1%;
+  background-color: var(--color-blue);
+  -webkit-mask-image: url('../assets/france.svg');
+  mask-image: url('../assets/france.svg');
+}
+.journey__country--jp {
+  right: -1%;
+  background-color: var(--color-rose);
+  -webkit-mask-image: url('../assets/japan.svg');
+  mask-image: url('../assets/japan.svg');
+}
+.journey__label { margin: 0.75rem 0 0; font-size: 1.1rem; }
+.journey__label strong { color: var(--color-rose); }
+.journey__label .pct { color: var(--color-blue); }
+
 /* ---------- FILTERS ---------- */
 .filters {
   max-width: var(--maxw);

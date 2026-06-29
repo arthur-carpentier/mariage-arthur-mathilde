@@ -26,10 +26,52 @@ async function load() {
     return;
   }
   applyConfig();
+  renderJourney();
   renderFilters();
   renderGifts();
   bindFreeGift();
   bindModal();
+}
+
+/* ---------- Jauge de progression (France → Japon) ---------- */
+function renderJourney() {
+  const prog = state.config.progress || {};
+  const collected = Math.max(0, Number(prog.collected) || 0);
+  const goal =
+    Number(prog.goal) > 0
+      ? Number(prog.goal)
+      : state.gifts.reduce((sum, g) => sum + (Number(g.price) || 0), 0);
+  const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
+
+  const label = $("#journey-label");
+  if (label) {
+    label.innerHTML =
+      `💞 Déjà <strong>${formatPrice(collected)}</strong> réunis sur ` +
+      `<strong>${formatPrice(goal)}</strong> — ` +
+      `<span class="pct">${Math.round(pct)} %</span> du voyage financé ✈️`;
+  }
+
+  const route = document.getElementById("route-fg");
+  const couple = document.getElementById("journey-couple");
+  if (!route || !couple) return;
+  const total = route.getTotalLength();
+
+  // animation douce de 0 % jusqu'à la valeur cible
+  const duration = 1400;
+  let start = null;
+  const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic
+
+  function frame(ts) {
+    if (start === null) start = ts;
+    const t = Math.min(1, (ts - start) / duration);
+    const cur = pct * ease(t);
+    route.setAttribute("stroke-dashoffset", String(100 - cur));
+    const point = route.getPointAtLength((total * cur) / 100);
+    couple.setAttribute("x", point.x);
+    couple.setAttribute("y", point.y - 4); // posé au-dessus du tracé
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
 
 /* ---------- Textes du couple ---------- */

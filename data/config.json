@@ -5,6 +5,11 @@
     "intro": "Pour notre mariage, plutôt qu'une liste classique, nous rêvons d'un voyage au Japon. Chaque activité ci-dessous est une étape de ce voyage : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
     "weddingDate": ""
   },
+  "progress": {
+    "collected": 0,
+    "goal": null,
+    "_comment": "Mettez à jour 'collected' à la main au fil des cadeaux reçus. 'goal' = montant total visé ; laissez null pour calculer automatiquement la somme de toutes les activités de gifts.json."
+  },
   "payment": {
     "paypalMe": {
       "enabled": true,
