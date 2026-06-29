@@ -157,6 +157,9 @@ function closeModal() {
   $("#confirm-form").hidden = false;
   $("#confirm-done").hidden = true;
   $("#confirm-form").reset();
+  const submitBtn = $("#confirm-form").querySelector('button[type="submit"]');
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Envoyer 💛";
 }
 
 function showStep(step) {
