@@ -72,7 +72,7 @@ function leaveIntro(intro, reduce) {
   document.getElementById("intro-torii").classList.add("fly");
   document.getElementById("intro-title").classList.add("fly");
   intro.classList.add("welcome--leaving");
-  setTimeout(() => finishIntro(intro), 1150);
+  setTimeout(() => finishIntro(intro), 1300);
 }
 
 function finishIntro(intro) {
@@ -87,7 +87,13 @@ function flipTo(el, target, endOpacity) {
   const dx = b.left + b.width / 2 - (a.left + a.width / 2);
   const dy = b.top + b.height / 2 - (a.top + a.height / 2);
   const scale = a.width ? b.width / a.width : 1;
+  // coupe l'animation d'entrée : avec fill-mode "both", elle continue de figer
+  // la propriété transform (à none) et empêcherait le vol.
+  el.style.animation = "none";
   el.style.transformOrigin = "center center";
+  el.style.transition = "none";
+  el.style.transform = "translate(0px, 0px) scale(1)";
+  void el.offsetWidth; // reflow pour fixer l'état de départ
   el.style.transition = "transform 1s cubic-bezier(0.66, 0, 0.2, 1), opacity 1s ease";
   requestAnimationFrame(() => {
     el.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
