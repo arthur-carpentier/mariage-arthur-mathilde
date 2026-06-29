@@ -205,9 +205,12 @@ function renderJourney() {
   if (!fill || !couple) return;
 
   // on part de 0 puis on anime vers la cible (transition CSS sur width/left)
+  // le marqueur reste dans la piste (retrait = sa demi-largeur) pour ne pas
+  // déborder sur les silhouettes France / Japon.
+  const inset = 30;
   requestAnimationFrame(() => {
     fill.style.width = pct + "%";
-    couple.style.left = pct + "%";
+    couple.style.left = `calc(${inset}px + (100% - ${2 * inset}px) * ${pct / 100})`;
   });
 }
 

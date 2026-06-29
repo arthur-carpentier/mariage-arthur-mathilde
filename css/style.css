@@ -152,7 +152,7 @@ h1, h2, h3 {
 .journey__bar {
   display: flex;
   align-items: center;
-  gap: clamp(0.5rem, 2.5vw, 1.1rem);
+  gap: clamp(0.75rem, 3vw, 1.5rem);
   width: 100%;
 }
 .journey__country {
