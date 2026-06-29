@@ -185,11 +185,13 @@ h1, h2, h3 {
   border-radius: 999px;
 }
 .journey__fill {
-  height: 100%;
-  width: 0;
+  position: absolute;
+  inset: 0;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--color-green), var(--color-rose));
-  transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* même rail que le squelette, simplement rogné par la droite selon l'avancement */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .journey__couple {
   position: absolute;
