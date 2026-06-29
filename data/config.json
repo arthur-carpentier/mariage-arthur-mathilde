@@ -26,7 +26,7 @@
   },
   "notification": {
     "enabled": true,
-    "formEndpoint": "https://formspree.io/f/CHANGE_ME",
+    "formEndpoint": "https://formsubmit.co/arthur.carpentier33140@gmail.com",
     "_comment": "Mettez ici votre endpoint Formspree (https://formspree.io) ou FormSubmit (https://formsubmit.co/votre@email). Voir README.md. Si laissé en CHANGE_ME, le formulaire affiche un message mais n'envoie rien."
   }
 }
