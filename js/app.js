@@ -587,6 +587,7 @@ function openModal({ title, emoji, amount, id }) {
   $("#modal-title").textContent = title;
   $("#modal-amount").textContent = formatPrice(amount);
   renderPayMethods();
+  renderPayRadios();
   showStep("pay");
   $("#modal").hidden = false;
   document.body.style.overflow = "hidden";
@@ -647,6 +648,29 @@ function bindModal() {
 }
 
 /* ---------- Moyens de paiement ---------- */
+// liste des moyens réellement disponibles selon la config
+function availableMethods() {
+  const p = state.config.payment || {};
+  const list = [];
+  if (p.paypalMe && p.paypalMe.enabled && isReal(p.paypalMe.url)) list.push({ track: "PayPal", label: "🅿️ PayPal" });
+  if (p.wero && p.wero.enabled && (p.wero.recipients || []).some((r) => r && isReal(r.phone))) list.push({ track: "Wero", label: "📱 Wero" });
+  if (p.bankTransfer && p.bankTransfer.enabled && isReal(p.bankTransfer.iban)) list.push({ track: "Virement", label: "🏦 Virement" });
+  if (p.stripe && p.stripe.enabled && isReal(p.stripe.url)) list.push({ track: "Stripe", label: "💳 Carte" });
+  return list;
+}
+
+// construit les radios « Comment avez-vous payé ? » selon les moyens dispos (+ Autre)
+function renderPayRadios() {
+  const fs = document.getElementById("payradio");
+  if (!fs) return;
+  const opts = availableMethods().concat([{ track: "Autre", label: "✨ Autre" }]);
+  fs.innerHTML =
+    "<legend>Comment avez-vous payé ?</legend>" +
+    opts
+      .map((o) => `<label><input type="radio" name="moyen" value="${o.track}" /> ${o.label}</label>`)
+      .join("");
+}
+
 function renderPayMethods() {
   const p = state.config.payment || {};
   const box = $("#paymethods");
@@ -664,6 +688,25 @@ function renderPayMethods() {
         track: "PayPal",
       })
     );
+  }
+
+  // Wero
+  if (p.wero && p.wero.enabled && (p.wero.recipients || []).length) {
+    const rows = p.wero.recipients
+      .filter((r) => r && isReal(r.phone))
+      .map((r) => copyRow(r.name, r.phone))
+      .join("");
+    if (rows) {
+      box.appendChild(
+        methodEl({
+          icon: "📱",
+          name: "Wero",
+          note: p.wero.note,
+          action: rows,
+          track: "Wero",
+        })
+      );
+    }
   }
 
   // Virement

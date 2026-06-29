@@ -19,6 +19,14 @@
       "url": "https://paypal.me/ArthurCarpentier862",
       "note": "Merci de bien sélectionner l'option « Envoyer à un proche / Entre amis et famille » afin d'éviter les frais : nous recevons ainsi 100% de votre cadeau."
     },
+    "wero": {
+      "enabled": true,
+      "recipients": [
+        { "name": "Arthur", "phone": "06 41 09 77 97" },
+        { "name": "Mathilde", "phone": "06 95 52 86 62" }
+      ],
+      "note": "Paiement instantané et sans frais via Wero (depuis l'appli de votre banque). Envoyez au numéro d'Arthur ou de Mathilde."
+    },
     "bankTransfer": {
       "enabled": true,
       "accountHolder": "Arthur Carpentier et Mathilde Tauveron",
