@@ -1,22 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" fill="none" stroke="#7d3450" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-  <!-- avant-toit en vallée, à pointes relevées -->
-  <path d="M14 28 C20 20 30 20 32 30 C70 53 110 51 150 51 C190 51 230 53 268 30 C270 20 280 20 286 28"/>
-  <!-- ligne de tuiles parallèle -->
-  <path d="M36 31 C72 51 110 49 150 49 C190 49 228 51 264 31" stroke-width="1.6" opacity="0.7"/>
-  <!-- faîtage -->
-  <path d="M98 22 C126 14 174 14 202 22"/>
-  <!-- pentes vers les pointes -->
-  <path d="M98 22 L36 31"/>
-  <path d="M202 22 L264 31"/>
-  <!-- épi de faîtage -->
-  <path d="M150 14 v-4" stroke-width="2"/>
-  <circle cx="150" cy="7.5" r="2.6" stroke-width="2"/>
-  <!-- lanterne gauche -->
-  <path d="M58 46 v3" stroke-width="1.6"/>
-  <rect x="51" y="49" width="13" height="11" rx="3.5" stroke-width="1.6"/>
-  <path d="M51 52.6 h13 M51 56.2 h13" stroke-width="1" opacity="0.7"/>
-  <!-- lanterne droite -->
-  <path d="M242 46 v3" stroke-width="1.6"/>
-  <rect x="236" y="49" width="13" height="11" rx="3.5" stroke-width="1.6"/>
-  <path d="M236 52.6 h13 M236 56.2 h13" stroke-width="1" opacity="0.7"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 58" fill="none" stroke="#7d3450" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <!-- grand avant-toit concave à pointes relevées -->
+  <path d="M3 26 C18 42 42 44 66 43 C108 41 128 41 150 41 C172 41 192 41 234 43 C258 44 282 42 297 26"/>
+  <!-- double ligne de tuiles -->
+  <path d="M40 40 C84 45 116 44 150 44 C184 44 216 45 260 40" stroke-width="1.6" opacity="0.7"/>
+  <!-- faîtage horizontal + petits épis d'extrémité -->
+  <path d="M96 15 H204"/>
+  <path d="M96 15 l-7 -4 M204 15 l7 -4" stroke-width="2"/>
+  <!-- pentes (croupes) -->
+  <path d="M96 15 L44 39"/>
+  <path d="M204 15 L256 39"/>
+  <!-- épi de faîtage central -->
+  <circle cx="150" cy="11" r="2.4" stroke-width="2"/>
+  <!-- lanterne suspendue gauche (en haut du pilier) -->
+  <path d="M33 41 v2.5" stroke-width="1.5"/>
+  <path d="M27.5 43.5 h11" stroke-width="1.5"/>
+  <rect x="28.5" y="44" width="9" height="11" rx="2.5" stroke-width="1.5"/>
+  <path d="M28.5 47.7 h9 M28.5 51.3 h9" stroke-width="1" opacity="0.7"/>
+  <path d="M33 55 v2.2" stroke-width="1.5"/>
+  <!-- lanterne suspendue droite -->
+  <path d="M267 41 v2.5" stroke-width="1.5"/>
+  <path d="M261.5 43.5 h11" stroke-width="1.5"/>
+  <rect x="262.5" y="44" width="9" height="11" rx="2.5" stroke-width="1.5"/>
+  <path d="M262.5 47.7 h9 M262.5 51.3 h9" stroke-width="1" opacity="0.7"/>
+  <path d="M267 55 v2.2" stroke-width="1.5"/>
 </svg>
