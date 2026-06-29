@@ -13,7 +13,7 @@
     },
     "bankTransfer": {
       "enabled": true,
-      "accountHolder": "Arthur Carpentier",
+      "accountHolder": "Arthur Carpentier et Mathilde Tauveron",
       "compte": "",
       "bic": "",
       "note": "Sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
