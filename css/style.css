@@ -469,31 +469,31 @@ h1, h2, h3 {
 /* Portique de temple au trait encadrant chaque carte (toit + lanternes, piliers, socle) */
 .card {
   position: relative;
-  padding: 64px 24px 26px;
+  padding: 58px 26px 28px;
   border-color: var(--color-rose-light);
-  background: url("../assets/gate-base.svg") bottom center / calc(100% - 6px) 18px no-repeat, var(--color-white);
+  background: url("../assets/gate-base.svg") bottom center / calc(100% - 4px) 20px no-repeat, var(--color-white);
 }
 .card__media { border-radius: 8px 8px 0 0; }
-/* toit retroussé + lanternes, en haut, étiré sur la largeur */
+/* toit (faîtage + avant-toit) et lanternes, en haut, étiré sur la largeur */
 .card::before {
   content: "";
   position: absolute;
   top: 1px; left: 0; right: 0;
-  height: 64px;
+  height: 56px;
   z-index: 3;
   pointer-events: none;
-  background: url("../assets/gate-roof.svg") top center / 100% 64px no-repeat;
+  background: url("../assets/gate-roof.svg") top center / 100% 56px no-repeat;
 }
 /* piliers (côtés), entre le toit et le socle */
 .card::after {
   content: "";
   position: absolute;
-  top: 56px; bottom: 22px; left: 0; right: 0;
+  top: 54px; bottom: 24px; left: 0; right: 0;
   z-index: 2;
   pointer-events: none;
   background:
-    url("../assets/gate-pillar.svg") left 9px top 0 / 14px 18px repeat-y,
-    url("../assets/gate-pillar.svg") right 9px top 0 / 14px 18px repeat-y;
+    url("../assets/gate-pillar.svg") left 11px top 0 / 14px 18px repeat-y,
+    url("../assets/gate-pillar.svg") right 11px top 0 / 14px 18px repeat-y;
 }
 
 /* Texture douce derrière l'emoji des cartes (atténuée) */

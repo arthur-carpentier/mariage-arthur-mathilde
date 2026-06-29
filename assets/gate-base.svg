@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 20" fill="none" stroke="#7d3450" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-  <!-- pieds des piliers -->
-  <path d="M16 2 V9 M284 2 V9"/>
-  <!-- plateforme -->
-  <path d="M8 9 H292"/>
-  <path d="M3 17 H297"/>
-  <path d="M8 9 V17 M292 9 V17"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 22" fill="none" stroke="#7d3450" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- seuil reliant les deux piliers -->
+  <path d="M22 3 H278"/>
+  <path d="M22 3 V11 M278 3 V11"/>
+  <!-- plateforme à deux niveaux -->
+  <path d="M12 11 H288"/>
+  <path d="M12 11 V19 M288 11 V19"/>
+  <path d="M4 19 H296"/>
 </svg>
