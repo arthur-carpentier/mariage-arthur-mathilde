@@ -208,9 +208,9 @@ function currentCollected() {
 }
 
 /* ---------- Jauge de progression (France → Japon) ---------- */
-const COUPLE_INSET = 30; // demi-largeur du marqueur, garde le couple dans la piste
+// le marqueur (au-dessus de la barre) pointe exactement le front de remplissage
 function insetCalc(pct) {
-  return `calc(${COUPLE_INSET}px + (100% - ${2 * COUPLE_INSET}px) * ${pct / 100})`;
+  return pct + "%";
 }
 function setJourneyLabel(collected, goal) {
   const label = $("#journey-label");
