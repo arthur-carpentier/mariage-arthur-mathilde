@@ -13,9 +13,9 @@
     },
     "bankTransfer": {
       "enabled": true,
-      "accountHolder": "CHANGE_ME (Arthur ...)",
-      "compte": "CHANGE_ME",
-      "bic": "CHANGE_ME",
+      "accountHolder": "Arthur Carpentier",
+      "compte": "",
+      "bic": "",
       "note": "Sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
     },
     "stripe": {
