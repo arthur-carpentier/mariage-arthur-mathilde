@@ -31,6 +31,80 @@ async function load() {
   renderGifts();
   bindFreeGift();
   bindModal();
+  initDecor();
+}
+
+/* ---------- Décor vivant : pétales, parallaxe, apparitions ---------- */
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function initDecor() {
+  initReveal();
+  if (prefersReducedMotion()) return;
+  spawnPetals(22);
+  initParallax();
+}
+
+function spawnPetals(count) {
+  const layer = $("#petals");
+  if (!layer) return;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("div");
+    p.className = "petal";
+    // pseudo-aléatoire déterministe (pas de Math.random requis)
+    const r = (n) => ((Math.sin((i + 1) * n) + 1) / 2);
+    const size = 8 + r(12.9) * 12;
+    p.style.left = (r(3.1) * 100).toFixed(1) + "%";
+    p.style.width = p.style.height = size.toFixed(1) + "px";
+    p.style.setProperty("--drift", (r(7.3) * 160 - 80).toFixed(0) + "px");
+    p.style.setProperty("--spin", (360 + r(5.7) * 540).toFixed(0) + "deg");
+    p.style.animationDuration = (8 + r(9.4) * 8).toFixed(1) + "s";
+    p.style.animationDelay = "-" + (r(2.2) * 12).toFixed(1) + "s";
+    p.style.opacity = (0.5 + r(4.8) * 0.4).toFixed(2);
+    layer.appendChild(p);
+  }
+}
+
+function initParallax() {
+  const branches = document.querySelectorAll(".hero__branch");
+  const torii = $(".hero__torii");
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      branches.forEach((b, i) => {
+        b.style.transform =
+          (b.classList.contains("hero__branch--right") ? "scaleX(-1) " : "") +
+          `translateY(${y * 0.18}px)`;
+      });
+      if (torii) torii.style.transform = `translate(-50%, calc(-52% + ${y * 0.08}px))`;
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function initReveal() {
+  const items = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("is-visible"));
+    return;
+  }
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-visible");
+          obs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+  items.forEach((el) => obs.observe(el));
 }
 
 /* ---------- Jauge de progression (France → Japon) ---------- */
@@ -72,6 +146,10 @@ function applyConfig() {
   $("#couple-subtitle").textContent = c.subtitle || "";
   $("#couple-intro").textContent = c.intro || "";
   $("#couple-date").textContent = c.weddingDate || "";
+  if (c.marker) {
+    const m = document.getElementById("journey-couple");
+    if (m) m.textContent = c.marker;
+  }
 }
 
 /* ---------- Filtres par catégorie ---------- */
@@ -103,7 +181,7 @@ function renderGifts() {
   grid.innerHTML = "";
   list.forEach((g) => {
     const card = document.createElement("article");
-    card.className = "card";
+    card.className = "card reveal";
 
     const media = document.createElement("div");
     media.className = "card__media";
