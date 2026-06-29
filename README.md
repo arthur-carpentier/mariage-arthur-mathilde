@@ -95,6 +95,7 @@ python3 -m http.server 8000
 
 ## 🎨 Charte graphique
 
-Couleurs (variables CSS dans `css/style.css`) :
-bleu marine `#113B54`, vert d'eau `#E2F4DF`, pervenche `#BBD1FF`,
-chartreuse `#DBE64C`, vert sapin `#024442`. Aucun noir pur.
+Palette mariage (variables CSS dans `css/style.css`) :
+rose sakura `#B05078` (+ rosé doux `#F6D5E0`), crème `#FBF4E9`, blanc `#FFFFFF`,
+vert sauge `#4E7A60` (+ vert doux `#DCEBDF`), bleu `#3A6E8C` (+ bleu doux `#D6E7F1`).
+Texte en bleu ardoise `#34526A` (aucun noir pur).
