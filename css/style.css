@@ -301,6 +301,19 @@ h1, h2, h3 {
 .card__cat[data-cat="Détente"]     { color: #2e7d74; background: #cdebe5; }
 .card__cat[data-cat="Aventure"]    { color: #b5523a; background: #f4ddd4; }
 .card__cat[data-cat="Souvenirs"]   { color: #8a7a1f; background: #eeedc8; }
+
+/* couleur de catégorie diffusée sur toute la carte */
+.card[data-cat="Transport"]   { --cat: #2f6d8c; --cat-bg: #e7f1f7; }
+.card[data-cat="Hébergement"] { --cat: #b05078; --cat-bg: #fbe7ef; }
+.card[data-cat="Gastronomie"] { --cat: #a85d20; --cat-bg: #f9ecd8; }
+.card[data-cat="Parcs"]       { --cat: #6a4fb0; --cat-bg: #ece7f7; }
+.card[data-cat="Culture"]     { --cat: #4e7a60; --cat-bg: #e6f0e8; }
+.card[data-cat="Détente"]     { --cat: #2e7d74; --cat-bg: #def2ee; }
+.card[data-cat="Aventure"]    { --cat: #b5523a; --cat-bg: #f7e6e0; }
+.card[data-cat="Souvenirs"]   { --cat: #8a7a1f; --cat-bg: #f3f1d9; }
+.card[data-cat] { border-color: color-mix(in srgb, var(--cat) 38%, white); }
+.card[data-cat] .card__media { background-color: var(--cat-bg); }
+.card[data-cat] .card__price { color: var(--cat); }
 .card__title { font-size: 1.2rem; margin-bottom: 0.4rem; }
 .card__desc { font-size: 0.95rem; color: var(--color-ink); flex: 1; }
 .card__footer {
@@ -518,11 +531,11 @@ h1, h2, h3 {
     url("../assets/gate-pillar.svg") right 11px top 0 / 14px 18px repeat-y;
 }
 
-/* Texture douce derrière l'emoji des cartes (atténuée) */
+/* Texture douce derrière l'emoji des cartes (atténuée, neutre pour toute teinte) */
 .card__media {
   background-color: var(--color-green-light);
   background-image:
-    radial-gradient(circle at 50% 100%, transparent 40%, rgba(63, 107, 79, 0.045) 41%, rgba(63, 107, 79, 0.045) 46%, transparent 47%);
+    radial-gradient(circle at 50% 100%, transparent 40%, rgba(52, 82, 106, 0.05) 41%, rgba(52, 82, 106, 0.05) 46%, transparent 47%);
   background-size: 22px 22px;
 }
 
@@ -549,13 +562,22 @@ h1, h2, h3 {
   display: inline-block;
 }
 
-/* Apparition au scroll */
+/* Apparition au scroll (montée + léger zoom, en cascade) */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(28px) scale(0.96);
   transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.is-visible { opacity: 1; transform: none; }
+
+/* Survol 3D des cartes (desktop : pointeur fin + survol) */
+@media (hover: hover) and (pointer: fine) {
+  .card { will-change: transform; }
+}
+/* Retour tactile sur mobile (pas de survol) */
+@media (hover: none) {
+  .card:active { transform: scale(0.985); }
+}
 
 /* ======================================================================
    AMÉLIORATIONS : infos pratiques, tri, partage, radios, toast, paliers, a11y
