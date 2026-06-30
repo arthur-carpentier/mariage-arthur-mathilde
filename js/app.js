@@ -35,12 +35,37 @@ async function load() {
   bindShare();
   initDecor();
   initTilt();
+  bindToCagnotte();
   // l'arc en pointillés est calculé en pixels : on le redessine au redimensionnement
   let arcTimer = null;
   window.addEventListener("resize", () => {
     clearTimeout(arcTimer);
     arcTimer = setTimeout(drawArc, 150);
   }, { passive: true });
+}
+
+/* Bouton flottant : remonte jusqu'à l'encart de la cagnotte (pas tout en haut) */
+function bindToCagnotte() {
+  const btn = document.getElementById("to-cagnotte");
+  const journey = document.getElementById("journey");
+  if (!btn || !journey) return;
+  btn.addEventListener("click", () => {
+    journey.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+  });
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    // visible dès qu'on a dépassé le bas de la cagnotte (on est dans la liste)
+    const show = journey.getBoundingClientRect().bottom < 0;
+    btn.hidden = !show;
+    btn.classList.toggle("to-cagnotte--show", show);
+  };
+  window.addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+  update();
 }
 
 /* Inclinaison 3D + halo des cartes : souris au survol ET doigt en mobile */
@@ -55,6 +80,8 @@ function initTilt() {
     card.style.transition = "";
     card.style.transform = "";
     card.classList.remove("is-hovered");
+    const em = card.querySelector(".card__emoji");
+    if (em) { em.style.transition = ""; em.style.transform = ""; }
   };
   const tilt = (e) => {
     const card = e.target.closest(".card");
@@ -68,6 +95,12 @@ function initTilt() {
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     card.style.transform = `perspective(720px) rotateX(${(-py * 6).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-5px)`;
+    // parallaxe : l'emoji (premier plan) glisse plus que le fond → effet de profondeur
+    const em = card.querySelector(".card__emoji");
+    if (em) {
+      em.style.transition = "transform 0s";
+      em.style.transform = `translate(${(px * 26).toFixed(1)}px, ${(py * 22).toFixed(1)}px) scale(1.08)`;
+    }
   };
   const clear = () => { reset(active); active = null; };
   // pointermove couvre la souris (survol) et le tactile (doigt qui glisse).
@@ -710,9 +743,12 @@ function renderGifts() {
     media.className = "card__media";
     if (g.image) {
       media.style.backgroundImage = `url('${g.image}')`;
-      media.textContent = "";
     } else {
-      media.textContent = g.emoji || "🎁";
+      // l'emoji est dans sa propre couche pour pouvoir flotter au-dessus du fond
+      const em = document.createElement("span");
+      em.className = "card__emoji";
+      em.textContent = g.emoji || "🎁";
+      media.appendChild(em);
     }
 
     const body = document.createElement("div");
