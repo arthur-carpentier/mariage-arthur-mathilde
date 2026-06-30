@@ -526,7 +526,7 @@ function renderGifts() {
     const body = document.createElement("div");
     body.className = "card__body";
     body.innerHTML = `
-      ${g.category ? `<span class="card__cat">${g.category}</span>` : ""}
+      ${g.category ? `<span class="card__cat" data-cat="${escapeHtml(g.category)}">${escapeHtml(g.category)}</span>` : ""}
       <h3 class="card__title">${escapeHtml(g.title)}</h3>
       <p class="card__desc">${escapeHtml(g.description || "")}</p>
       <div class="card__footer">
