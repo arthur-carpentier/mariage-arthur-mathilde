@@ -176,12 +176,16 @@ h1, h2, h3 {
 .journey__sub { margin: 0.25rem 0 1.5rem; color: var(--color-green); font-weight: 700; }
 .journey__bar {
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* pays + arc + avion en haut ; jauge et mariés plus bas */
   gap: clamp(0.75rem, 3vw, 1.5rem);
   width: 100%;
+  position: relative;
+  min-height: clamp(140px, 30vw, 190px);
+  padding-top: clamp(26px, 7vw, 46px); /* dégage le ciel pour l'arc et l'avion */
 }
 .journey__country {
   flex: none;
+  align-self: flex-start;
   width: clamp(54px, 13vw, 84px);
   height: clamp(54px, 13vw, 84px);
   opacity: 0.9;
@@ -205,6 +209,8 @@ h1, h2, h3 {
 .journey__track {
   position: relative;
   flex: 1;
+  align-self: flex-end; /* la jauge descend sous les pays */
+  margin-bottom: clamp(6px, 2vw, 14px);
   height: 16px;
   background: var(--color-blue-light);
   border-radius: 999px;

@@ -448,9 +448,12 @@ function flyPlane() {
     const pt = path.getPointAtLength(len * t);
     const pt2 = path.getPointAtLength(Math.min(len, len * t + 1));
     const ang = (Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180) / Math.PI;
+    // l'emoji ✈️ pointe naturellement vers le haut-droite (≈ -45°) :
+    // on compense pour que le nez suive la tangente de l'arc.
+    const rot = ang + 45;
     const op = t < 0.1 ? t / 0.1 : t > 0.9 ? (1 - t) / 0.1 : 1;
     kf.push({
-      transform: `translate(${(pt.x - 10).toFixed(1)}px, ${(pt.y - 10).toFixed(1)}px) rotate(${ang.toFixed(1)}deg)`,
+      transform: `translate(${(pt.x - 10).toFixed(1)}px, ${(pt.y - 10).toFixed(1)}px) rotate(${rot.toFixed(1)}deg)`,
       opacity: op,
     });
   }
