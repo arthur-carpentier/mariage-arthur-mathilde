@@ -28,11 +28,11 @@ body {
   background: var(--color-cream);
   line-height: 1.6;
 }
-/* fond washi : taches d'aquarelle + grain de papier (fixes) */
+/* fond washi : taches d'aquarelle (qui respirent lentement) + grain de papier */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: -10%;
   z-index: -2;
   background:
     radial-gradient(circle at 12% 18%, rgba(176, 80, 120, 0.12), transparent 38%),
@@ -40,6 +40,16 @@ body::before {
     radial-gradient(circle at 78% 78%, rgba(63, 107, 79, 0.12), transparent 42%),
     radial-gradient(circle at 22% 85%, rgba(176, 80, 120, 0.08), transparent 40%),
     var(--color-cream);
+  background-size: 160% 160%;
+  background-position: 0% 0%;
+  animation: washi-drift 34s ease-in-out infinite alternate;
+}
+@keyframes washi-drift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
 }
 body::after {
   content: "";
@@ -86,13 +96,19 @@ h1, h2, h3 {
   border: 1px solid rgba(176, 80, 120, 0.35);
   border-radius: 0 100% 0 100%;
   opacity: 0.85;
-  will-change: transform;
+  --op: 0.85;
+  filter: blur(var(--blur, 0));
+  will-change: transform, opacity;
   animation: petal-fall linear infinite;
 }
+/* plans de profondeur : opacité maximale propre à chaque plan */
+.petal--d0 { --op: 0.5; }
+.petal--d1 { --op: 0.7; }
+.petal--d2 { --op: 0.92; }
 @keyframes petal-fall {
   0% { transform: translate(0, -24px) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.85; }
-  90% { opacity: 0.85; }
+  10% { opacity: var(--op, 0.85); }
+  90% { opacity: var(--op, 0.85); }
   100% { transform: translate(var(--drift, 40px), 110vh) rotate(var(--spin, 540deg)); opacity: 0; }
 }
 /* branches de sakura dans les coins */
@@ -111,6 +127,15 @@ h1, h2, h3 {
   color: var(--color-rose);
   opacity: 0.22;
   z-index: -1;
+  animation: torii-draw 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* le torii « se dessine » de haut en bas au chargement */
+@keyframes torii-draw {
+  0% { opacity: 0; clip-path: inset(0 0 100% 0); }
+  100% { opacity: 0.22; clip-path: inset(0 0 0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__torii { animation: none; }
 }
 .hero__kicker {
   text-transform: uppercase;
@@ -188,10 +213,37 @@ h1, h2, h3 {
   position: absolute;
   inset: 0;
   border-radius: 999px;
+  overflow: hidden;
   background: linear-gradient(90deg, var(--color-green), var(--color-rose));
   /* même rail que le squelette, simplement rogné par la droite selon l'avancement */
   clip-path: inset(0 100% 0 0);
   transition: clip-path 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* reflet qui glisse le long de la partie remplie */
+.journey__fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  transform: translateX(-130%);
+  animation: gauge-shimmer 3s ease-in-out infinite;
+}
+@keyframes gauge-shimmer {
+  0% { transform: translateX(-130%); }
+  55%, 100% { transform: translateX(130%); }
+}
+/* arc en pointillés + avion au-dessus de la jauge */
+.journey__arc { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 1; overflow: visible; }
+.journey__arcpath { fill: none; stroke: var(--color-rose); stroke-width: 2; stroke-dasharray: 2 5; stroke-linecap: round; opacity: 0.38; }
+.journey__plane { position: absolute; left: 0; top: 0; font-size: 1.4rem; line-height: 1; pointer-events: none; z-index: 5; opacity: 0; will-change: transform; }
+/* odomètre du montant collecté */
+.odo { display: inline-flex; align-items: flex-start; font-weight: 800; color: var(--color-rose); }
+.odo-cell { display: inline-block; height: 1em; overflow: hidden; }
+.odo-reel { display: flex; flex-direction: column; }
+.odo-reel span { height: 1em; line-height: 1; }
+.odo-sep { white-space: pre; }
+@media (prefers-reduced-motion: reduce) {
+  .journey__fill::after { animation: none; opacity: 0; }
 }
 .journey__couple {
   position: absolute;
@@ -268,6 +320,11 @@ h1, h2, h3 {
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+/* halo « actif » piloté par le JS : survol souris ET doigt sur mobile */
+.card.is-hovered {
+  box-shadow: var(--shadow-hover), 0 0 0 1px color-mix(in srgb, var(--cat, var(--color-rose)) 45%, transparent);
+  z-index: 2;
+}
 
 .card__media {
   height: 150px;
@@ -334,10 +391,12 @@ h1, h2, h3 {
   padding: 0.7rem 1.4rem;
   cursor: pointer;
   font-size: 0.95rem;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease, box-shadow 0.2s ease;
 }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
+@media (hover: hover) {
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(176, 80, 120, 0.32); }
+}
+.btn:active { transform: scale(0.93); }
 .btn--primary { background: var(--color-rose); color: var(--color-white); }
 .btn--primary:hover { filter: brightness(1.08); }
 .btn--ghost {
@@ -499,6 +558,11 @@ h1, h2, h3 {
   background-position: center bottom;
   background-size: 44px 22px;
   opacity: 0.55;
+}
+/* variante : rangée de mini-torii */
+.wave-divider--torii {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='24' viewBox='0 0 46 24'%3E%3Cg fill='none' stroke='%23B05078' stroke-width='1.7' stroke-linecap='round'%3E%3Cpath d='M7 6 H39'/%3E%3Cpath d='M11 10 H35'/%3E%3Cpath d='M15 7 V21'/%3E%3Cpath d='M31 7 V21'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 46px 24px;
 }
 
 /* Portique de temple au trait encadrant chaque carte (toit + lanternes, piliers, socle) */
