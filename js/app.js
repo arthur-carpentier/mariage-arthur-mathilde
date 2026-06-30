@@ -74,6 +74,9 @@ function initTilt() {
   const grid = document.getElementById("gifts");
   if (!grid) return;
   let active = null;
+  let enterAt = 0;
+  const RAMP = 320; // ms : durée d'arrivée progressive de l'inclinaison
+  const ENTER_EASE = "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)";
   const reset = (card) => {
     if (!card) return;
     // on rétablit la transition CSS pour un retour à plat en douceur
@@ -86,11 +89,17 @@ function initTilt() {
   const tilt = (e) => {
     const card = e.target.closest(".card");
     if (!card || !grid.contains(card)) { reset(active); active = null; return; }
-    if (active && active !== card) reset(active);
+    if (active !== card) {
+      if (active) reset(active);
+      enterAt = e.timeStamp; // nouvelle carte : on (re)démarre l'arrivée progressive
+    }
     active = card;
     card.classList.add("is-hovered");
-    // l'inclinaison suit le curseur/doigt sans inertie (pas de transition sur transform)
-    card.style.transition = "box-shadow 0.18s ease, transform 0s";
+    // À l'entrée : on amène l'inclinaison en douceur (sinon elle saute d'un
+    // coup vers la valeur du bord). Passé le temps de RAMP, on colle au curseur.
+    const ramping = e.timeStamp - enterAt < RAMP;
+    const tr = ramping ? ENTER_EASE : "transform 0s";
+    card.style.transition = "box-shadow 0.18s ease, " + tr;
     const r = card.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
@@ -98,7 +107,7 @@ function initTilt() {
     // parallaxe : l'emoji (premier plan) glisse plus que le fond → effet de profondeur
     const em = card.querySelector(".card__emoji");
     if (em) {
-      em.style.transition = "transform 0s";
+      em.style.transition = tr;
       em.style.transform = `translate(${(px * 26).toFixed(1)}px, ${(py * 22).toFixed(1)}px) scale(1.08)`;
     }
   };
