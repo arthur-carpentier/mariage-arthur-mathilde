@@ -34,6 +34,28 @@ async function load() {
   bindSort();
   bindShare();
   initDecor();
+  initTilt();
+}
+
+/* Survol 3D des cartes (desktop uniquement) ; sur mobile on ne fait rien */
+function initTilt() {
+  if (prefersReducedMotion()) return;
+  if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  const grid = document.getElementById("gifts");
+  if (!grid) return;
+  let active = null;
+  const reset = (card) => { if (card) card.style.transform = ""; };
+  grid.addEventListener("pointermove", (e) => {
+    const card = e.target.closest(".card");
+    if (!card) { reset(active); active = null; return; }
+    if (active && active !== card) reset(active);
+    active = card;
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = `perspective(720px) rotateX(${(-py * 6).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-5px)`;
+  });
+  grid.addEventListener("pointerleave", () => { reset(active); active = null; });
 }
 
 const state_sort = { value: "default" };
@@ -509,10 +531,13 @@ function renderGifts() {
 
   grid.innerHTML = "";
   const offered = offeredIds();
-  list.forEach((g) => {
+  list.forEach((g, i) => {
     const card = document.createElement("article");
     card.className = "card reveal";
     card.dataset.id = g.id;
+    if (g.category) card.dataset.cat = g.category;
+    card.style.transitionDelay = (i % 6) * 55 + "ms"; // cascade en vague
+
 
     const media = document.createElement("div");
     media.className = "card__media";
