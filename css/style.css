@@ -923,9 +923,11 @@ body.intro-open { overflow: hidden; }
 /* on coupe l'animation « torii qui se dessine » sinon son remplissage
    forcerait l'opacité et le torii réapparaîtrait derrière l'accueil */
 .hero--pending .hero__torii { animation: none; }
-/* les prénoms et le torii (éléments partagés) prennent le relais instantanément */
+/* les prénoms et le torii (éléments partagés) prennent le relais instantanément :
+   surtout PAS de « torii-draw » ici, sinon le torii se redessine et casse
+   l'illusion du torii qui vient de voler jusqu'à sa place */
 .hero--revealing #couple-names { opacity: 1; }
-.hero--revealing .hero__torii { opacity: 0.22; }
+.hero--revealing .hero__torii { animation: none; opacity: 0.22; clip-path: none; }
 /* le reste du hero apparaît en fondu autour d'eux */
 .hero--revealing .hero__kicker,
 .hero--revealing .hero__subtitle,
