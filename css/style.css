@@ -292,6 +292,15 @@ h1, h2, h3 {
   border-radius: 999px;
   margin-bottom: 0.6rem;
 }
+/* une couleur par catégorie */
+.card__cat[data-cat="Transport"]   { color: #2f6d8c; background: #d6e7f1; }
+.card__cat[data-cat="Hébergement"] { color: #b05078; background: #f6d5e0; }
+.card__cat[data-cat="Gastronomie"] { color: #a85d20; background: #f7e3c8; }
+.card__cat[data-cat="Parcs"]       { color: #6a4fb0; background: #e4def4; }
+.card__cat[data-cat="Culture"]     { color: #4e7a60; background: #dcebdf; }
+.card__cat[data-cat="Détente"]     { color: #2e7d74; background: #cdebe5; }
+.card__cat[data-cat="Aventure"]    { color: #b5523a; background: #f4ddd4; }
+.card__cat[data-cat="Souvenirs"]   { color: #8a7a1f; background: #eeedc8; }
 .card__title { font-size: 1.2rem; margin-bottom: 0.4rem; }
 .card__desc { font-size: 0.95rem; color: var(--color-ink); flex: 1; }
 .card__footer {
