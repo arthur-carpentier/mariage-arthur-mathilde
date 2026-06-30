@@ -1,16 +1,16 @@
 {
   "couple": {
     "names": "Arthur & Mathilde",
-    "subtitle": "Notre voyage de noces au Japon 🗾",
-    "intro": "Pour notre mariage, plutôt qu'une liste classique, nous rêvons d'un grand voyage de deux mois à travers tout le Japon, en avril–mai, du nord sauvage d'Hokkaidō aux plages d'Okinawa. Chaque activité ci-dessous est une étape de ce périple : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
-    "weddingDate": "🌸 Voyage prévu en avril–mai 🌸"
+    "subtitle": "Notre voyage de noces au Japon",
+    "intro": "Pour notre mariage, plutôt qu'une liste d'objets, nous rêvons d'un grand voyage de deux mois à travers tout le Japon, en avril–mai 2028, du nord sauvage d'Hokkaidō aux plages d'Okinawa. Chaque activité ci-dessous est une étape de ce périple : vous pouvez nous en offrir une partie ou la totalité, ou simplement participer librement. Merci du fond du cœur 💛",
+    "weddingDate": "🌸 Voyage prévu en avril–mai 2028 🌸"
   },
   "links": {
     "practical": "https://linktr.ee/arthuretmathilde"
   },
   "progress": {
     "collected": 0,
-    "goal": null,
+    "goal": 20000,
     "_comment": "Mettez à jour 'collected' à la main au fil des cadeaux reçus. 'goal' = montant total visé ; laissez null pour calculer automatiquement la somme de toutes les activités de gifts.json."
   },
   "payment": {
