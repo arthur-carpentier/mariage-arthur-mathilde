@@ -35,27 +35,44 @@ async function load() {
   bindShare();
   initDecor();
   initTilt();
+  // l'arc en pointillés est calculé en pixels : on le redessine au redimensionnement
+  let arcTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(arcTimer);
+    arcTimer = setTimeout(drawArc, 150);
+  }, { passive: true });
 }
 
-/* Survol 3D des cartes (desktop uniquement) ; sur mobile on ne fait rien */
+/* Inclinaison 3D + halo des cartes : souris au survol ET doigt en mobile */
 function initTilt() {
   if (prefersReducedMotion()) return;
-  if (!window.matchMedia || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
   const grid = document.getElementById("gifts");
   if (!grid) return;
   let active = null;
-  const reset = (card) => { if (card) card.style.transform = ""; };
-  grid.addEventListener("pointermove", (e) => {
+  const reset = (card) => {
+    if (!card) return;
+    card.style.transform = "";
+    card.classList.remove("is-hovered");
+  };
+  const tilt = (e) => {
     const card = e.target.closest(".card");
-    if (!card) { reset(active); active = null; return; }
+    if (!card || !grid.contains(card)) { reset(active); active = null; return; }
     if (active && active !== card) reset(active);
     active = card;
+    card.classList.add("is-hovered");
     const r = card.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     card.style.transform = `perspective(720px) rotateX(${(-py * 6).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-5px)`;
-  });
-  grid.addEventListener("pointerleave", () => { reset(active); active = null; });
+  };
+  const clear = () => { reset(active); active = null; };
+  // pointermove couvre la souris (survol) et le tactile (doigt qui glisse).
+  grid.addEventListener("pointermove", tilt);
+  // En tactile on déclenche aussi dès le contact, et on relâche à la fin.
+  grid.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse") tilt(e); });
+  grid.addEventListener("pointerup", clear);
+  grid.addEventListener("pointercancel", clear);
+  grid.addEventListener("pointerleave", clear);
 }
 
 const state_sort = { value: "default" };
@@ -176,17 +193,23 @@ function spawnPetals(layer, count) {
   if (!layer) return;
   for (let i = 0; i < count; i++) {
     const p = document.createElement("div");
-    p.className = "petal";
     // pseudo-aléatoire déterministe (pas de Math.random requis)
     const r = (n) => ((Math.sin((i + 1) * n) + 1) / 2);
-    const size = 8 + r(12.9) * 12;
+    // Trois plans de profondeur : arrière (petit, flou, lent), milieu, avant (gros, net, rapide).
+    const depth = i % 3; // 0 = loin, 1 = milieu, 2 = près
+    p.className = "petal petal--d" + depth;
+    const base = [7, 11, 16][depth];
+    const size = base + r(12.9) * (4 + depth * 4);
     p.style.left = (r(3.1) * 100).toFixed(1) + "%";
     p.style.width = p.style.height = size.toFixed(1) + "px";
     p.style.setProperty("--drift", (r(7.3) * 160 - 80).toFixed(0) + "px");
     p.style.setProperty("--spin", (360 + r(5.7) * 540).toFixed(0) + "deg");
-    p.style.animationDuration = (8 + r(9.4) * 8).toFixed(1) + "s";
-    p.style.animationDelay = "-" + (r(2.2) * 12).toFixed(1) + "s";
-    p.style.opacity = (0.5 + r(4.8) * 0.4).toFixed(2);
+    p.style.setProperty("--blur", [1.4, 0.6, 0].at(depth).toFixed(1) + "px");
+    // Les plans proches tombent plus vite, les lointains plus lentement.
+    const speed = [16, 12, 8][depth];
+    p.style.animationDuration = (speed + r(9.4) * 6).toFixed(1) + "s";
+    p.style.animationDelay = "-" + (r(2.2) * 14).toFixed(1) + "s";
+    p.style.opacity = ([0.35, 0.55, 0.8][depth] + r(4.8) * 0.18).toFixed(2);
     layer.appendChild(p);
   }
 }
@@ -272,12 +295,60 @@ function currentCollected() {
 function insetCalc(pct) {
   return pct + "%";
 }
-function setJourneyLabel(collected, goal) {
+function setJourneyStatic(goal) {
   const label = $("#journey-label");
   if (label) {
     label.innerHTML =
-      `💞 Déjà <strong>${formatPrice(collected)}</strong> réunis sur <strong>${formatPrice(goal)}</strong>`;
+      `💞 Déjà <span class="odo" id="odo"></span> réunis sur <strong>${formatPrice(goal)}</strong>`;
   }
+}
+/* construit l'odomètre dimensionné pour maxValue ; renvoie les rouleaux + leur rang */
+function buildOdo(maxValue) {
+  const odo = document.getElementById("odo");
+  if (!odo) return [];
+  const str = new Intl.NumberFormat("fr-FR").format(Math.max(0, Math.round(maxValue)));
+  const digits = str.replace(/\D/g, "");
+  odo.innerHTML = "";
+  const reels = [];
+  let di = 0;
+  for (const ch of str) {
+    if (/[0-9]/.test(ch)) {
+      const place = Math.pow(10, digits.length - 1 - di);
+      di++;
+      const cell = document.createElement("span");
+      cell.className = "odo-cell";
+      const reel = document.createElement("span");
+      reel.className = "odo-reel";
+      for (let n = 0; n <= 10; n++) {
+        const s = document.createElement("span");
+        s.textContent = String(n % 10);
+        reel.appendChild(s);
+      }
+      cell.appendChild(reel);
+      odo.appendChild(cell);
+      reels.push({ reel, place });
+    } else {
+      const sep = document.createElement("span");
+      sep.className = "odo-sep";
+      sep.textContent = " "; // espace fine insécable
+      odo.appendChild(sep);
+    }
+  }
+  const e = document.createElement("span");
+  e.className = "odo-sep";
+  e.textContent = " €";
+  odo.appendChild(e);
+  return reels;
+}
+function setOdo(reels, value) {
+  reels.forEach(({ reel, place }) => {
+    const d = (((value / place) % 10) + 10) % 10; // position continue 0..10
+    reel.style.transform = `translateY(${(-d).toFixed(3)}em)`;
+  });
+}
+function setJourneyLabel(collected, goal) {
+  setJourneyStatic(goal);
+  setOdo(buildOdo(collected), collected);
 }
 function setJourneyBar(collected, goal) {
   const pct = goal > 0 ? Math.min(100, (collected / goal) * 100) : 0;
@@ -287,13 +358,16 @@ function setJourneyBar(collected, goal) {
   if (couple) couple.style.left = insetCalc(pct);
 }
 function animateNumber(from, to, goal, duration) {
+  setJourneyStatic(goal);
+  const reels = buildOdo(to);
   let start = null;
   const ease = (t) => 1 - Math.pow(1 - t, 3);
   function frame(ts) {
     if (start === null) start = ts;
     const t = Math.min(1, (ts - start) / duration);
-    setJourneyLabel(Math.round(from + (to - from) * ease(t)), goal);
+    setOdo(reels, from + (to - from) * ease(t));
     if (t < 1) requestAnimationFrame(frame);
+    else setOdo(reels, to);
   }
   requestAnimationFrame(frame);
 }
@@ -302,11 +376,85 @@ function renderJourney() {
   const goal = goalAmount();
   const collected = currentCollected();
   setJourneyLabel(collected, goal);
-  // animation d'arrivée : barre + couple partent de 0, compteur grimpe
+  drawArc();
   requestAnimationFrame(() => {
     setJourneyBar(collected, goal);
     if (collected > 0) animateNumber(0, collected, goal, 1400);
+    flyPlane();
   });
+}
+
+/* ---------- Arc en pointillés + avion qui traverse ---------- */
+function journeyArcBox() {
+  const journey = document.getElementById("journey");
+  if (!journey) return null;
+  const bar = journey.querySelector(".journey__bar");
+  const fr = journey.querySelector(".journey__country--fr");
+  const jp = journey.querySelector(".journey__country--jp");
+  if (!bar || !fr || !jp) return null;
+  if (getComputedStyle(bar).position === "static") bar.style.position = "relative";
+  const br = bar.getBoundingClientRect();
+  const a = fr.getBoundingClientRect();
+  const b = jp.getBoundingClientRect();
+  return {
+    bar, w: br.width, h: br.height,
+    x0: a.left + a.width / 2 - br.left,
+    x1: b.left + b.width / 2 - br.left,
+    y: a.top + a.height / 2 - br.top,
+  };
+}
+function drawArc() {
+  const g = journeyArcBox();
+  if (!g) return;
+  const apex = Math.max(8, g.y - 44);
+  const ctrlY = 2 * apex - g.y; // contrôle quadratique pour un sommet ≈ apex
+  const d = `M ${g.x0} ${g.y} Q ${(g.x0 + g.x1) / 2} ${ctrlY} ${g.x1} ${g.y}`;
+  let svg = g.bar.querySelector(".journey__arc");
+  if (!svg) {
+    const NS = "http://www.w3.org/2000/svg";
+    svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("class", "journey__arc");
+    svg.setAttribute("aria-hidden", "true");
+    const path = document.createElementNS(NS, "path");
+    path.setAttribute("class", "journey__arcpath");
+    svg.appendChild(path);
+    g.bar.appendChild(svg);
+  }
+  svg.setAttribute("viewBox", `0 0 ${g.w} ${g.h}`);
+  svg.setAttribute("width", g.w);
+  svg.setAttribute("height", g.h);
+  svg.querySelector("path").setAttribute("d", d);
+}
+function flyPlane() {
+  if (prefersReducedMotion()) return;
+  const g = journeyArcBox();
+  if (!g) return;
+  drawArc();
+  const path = g.bar.querySelector(".journey__arcpath");
+  if (!path) return;
+  let plane = g.bar.querySelector(".journey__plane");
+  if (!plane) {
+    plane = document.createElement("div");
+    plane.className = "journey__plane";
+    plane.textContent = "✈️";
+    plane.setAttribute("aria-hidden", "true");
+    g.bar.appendChild(plane);
+  }
+  const len = path.getTotalLength();
+  const N = 40;
+  const kf = [];
+  for (let i = 0; i <= N; i++) {
+    const t = i / N;
+    const pt = path.getPointAtLength(len * t);
+    const pt2 = path.getPointAtLength(Math.min(len, len * t + 1));
+    const ang = (Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180) / Math.PI;
+    const op = t < 0.1 ? t / 0.1 : t > 0.9 ? (1 - t) / 0.1 : 1;
+    kf.push({
+      transform: `translate(${(pt.x - 10).toFixed(1)}px, ${(pt.y - 10).toFixed(1)}px) rotate(${ang.toFixed(1)}deg)`,
+      opacity: op,
+    });
+  }
+  plane.animate(kf, { duration: 2600, easing: "ease-in-out" });
 }
 
 /* ---------- Séquence « récompense » à la validation d'un cadeau ---------- */
@@ -361,6 +509,7 @@ function celebrate(gift, nom) {
     confettiBurst(journey);
     floatGain(Number(gift.amount) || 0, journey);
     animateNumber(before, after, goal, 1200);
+    flyPlane();
     // palier fêté : double salve + bannière
     if (crossedMilestone) {
       setTimeout(() => {
@@ -529,6 +678,16 @@ function renderGifts() {
   if (state_sort.value === "price-asc") list.sort((a, b) => a.price - b.price);
   else if (state_sort.value === "price-desc") list.sort((a, b) => b.price - a.price);
 
+  // FLIP : on mémorise la position des cartes déjà affichées pour les faire
+  // glisser vers leur nouvelle place après filtrage/tri.
+  const flip = !prefersReducedMotion() && grid.children.length > 0;
+  const firstRects = {};
+  if (flip) {
+    for (const el of grid.children) {
+      if (el.dataset && el.dataset.id) firstRects[el.dataset.id] = el.getBoundingClientRect();
+    }
+  }
+
   grid.innerHTML = "";
   const offered = offeredIds();
   list.forEach((g, i) => {
@@ -572,6 +731,30 @@ function renderGifts() {
     grid.appendChild(card);
   });
   observeReveals();
+
+  // FLIP : applique l'écart (Invert) puis l'anime vers zéro (Play).
+  if (flip) {
+    requestAnimationFrame(() => {
+      for (const el of grid.children) {
+        const prev = firstRects[el.dataset && el.dataset.id];
+        if (!prev) continue; // carte nouvellement révélée : laissée à l'apparition au scroll
+        const now = el.getBoundingClientRect();
+        const dx = prev.left - now.left;
+        const dy = prev.top - now.top;
+        if (Math.abs(dx) < 1 && Math.abs(dy) < 1) continue;
+        // déjà visible : on neutralise l'effet d'apparition pour cette carte
+        el.classList.add("is-visible");
+        el.style.transitionDelay = "0ms";
+        el.animate(
+          [
+            { transform: `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)` },
+            { transform: "translate(0, 0)" },
+          ],
+          { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" }
+        );
+      }
+    });
+  }
 }
 
 /* ---------- Cadeau libre ---------- */
