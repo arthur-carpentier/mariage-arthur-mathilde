@@ -51,6 +51,8 @@ function initTilt() {
   let active = null;
   const reset = (card) => {
     if (!card) return;
+    // on rétablit la transition CSS pour un retour à plat en douceur
+    card.style.transition = "";
     card.style.transform = "";
     card.classList.remove("is-hovered");
   };
@@ -60,6 +62,8 @@ function initTilt() {
     if (active && active !== card) reset(active);
     active = card;
     card.classList.add("is-hovered");
+    // l'inclinaison suit le curseur/doigt sans inertie (pas de transition sur transform)
+    card.style.transition = "box-shadow 0.18s ease, transform 0s";
     const r = card.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
@@ -132,6 +136,8 @@ function initIntro() {
   if (entered) { intro.remove(); return; }
 
   document.body.classList.add("intro-open");
+  // le hero (destination) reste masqué tant que la transition n'est pas finie
+  document.getElementById("hero")?.classList.add("hero--pending");
   const reduce = prefersReducedMotion();
   if (reduce) intro.classList.add("welcome--noanim");
   else spawnPetals(document.getElementById("intro-petals"), 16);
@@ -145,13 +151,11 @@ function leaveIntro(intro, reduce) {
   if (reduce) { finishIntro(intro); return; }
   const heroTorii = document.querySelector(".hero__torii");
   const heroTitle = document.getElementById("couple-names");
-  // les éléments partagés volent vers leur position finale dans le hero
-  // (flipTo mesure la cible AVANT qu'on la masque)
+  // les éléments partagés volent vers leur position finale dans le hero.
+  // Le hero est déjà masqué (hero--pending) : on ne voit donc que les éléments
+  // qui volent, jamais le texte de destination avant la fin du vol.
   flipTo(document.getElementById("intro-torii"), heroTorii, 0.22);
   flipTo(document.getElementById("intro-title"), heroTitle, 1);
-  // on masque les éléments du hero pendant le vol pour éviter toute superposition
-  if (heroTorii) heroTorii.style.opacity = "0";
-  if (heroTitle) heroTitle.style.visibility = "hidden";
   document.getElementById("intro-torii").classList.add("fly");
   document.getElementById("intro-title").classList.add("fly");
   intro.classList.add("welcome--leaving");
@@ -159,11 +163,10 @@ function leaveIntro(intro, reduce) {
 }
 
 function finishIntro(intro) {
-  // on redonne la main aux éléments du hero (à l'endroit exact où le vol s'achève)
-  const heroTorii = document.querySelector(".hero__torii");
-  const heroTitle = document.getElementById("couple-names");
-  if (heroTorii) heroTorii.style.opacity = "";
-  if (heroTitle) heroTitle.style.visibility = "";
+  // le vol est terminé : on révèle le hero (les prénoms et le torii prennent
+  // exactement le relais des éléments volants) puis on retire l'accueil.
+  const hero = document.getElementById("hero");
+  if (hero) { hero.classList.remove("hero--pending"); hero.classList.add("hero--revealing"); }
   intro.remove();
   document.body.classList.remove("intro-open");
 }
@@ -299,7 +302,7 @@ function setJourneyStatic(goal) {
   const label = $("#journey-label");
   if (label) {
     label.innerHTML =
-      `💞 Déjà <span class="odo" id="odo"></span> réunis sur <strong>${formatPrice(goal)}</strong>`;
+      `💞 Déjà <span class="odo" id="odo"></span>&nbsp;€ réunis sur <strong>${formatPrice(goal)}</strong>`;
   }
 }
 /* construit l'odomètre dimensionné pour maxValue ; renvoie les rouleaux + leur rang */
@@ -334,16 +337,18 @@ function buildOdo(maxValue) {
       odo.appendChild(sep);
     }
   }
-  const e = document.createElement("span");
-  e.className = "odo-sep";
-  e.textContent = " €";
-  odo.appendChild(e);
   return reels;
 }
 function setOdo(reels, value) {
+  // odomètre mécanique : chaque rouleau n'avance que lorsque les rangs
+  // inférieurs approchent du passage à 0 → on retombe sur des entiers nets.
   reels.forEach(({ reel, place }) => {
-    const d = (((value / place) % 10) + 10) % 10; // position continue 0..10
-    reel.style.transform = `translateY(${(-d).toFixed(3)}em)`;
+    const v = Math.max(0, value);
+    const digit = Math.floor(v / place) % 10;
+    const lowerFrac = (v % place) / place; // progression dans ce rang (0..1)
+    const roll = lowerFrac > 0.9 ? (lowerFrac - 0.9) / 0.1 : 0;
+    const pos = digit + roll; // 0..10 (10 = cellule « 0 » de bouclage)
+    reel.style.transform = `translateY(${(-pos).toFixed(3)}em)`;
   });
 }
 function setJourneyLabel(collected, goal) {
