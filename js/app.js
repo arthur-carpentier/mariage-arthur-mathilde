@@ -32,6 +32,7 @@ async function load() {
   bindFreeGift();
   bindModal();
   bindSort();
+  bindHideOffered();
   bindShare();
   initDecor();
   initTilt();
@@ -122,12 +123,22 @@ function initTilt() {
 }
 
 const state_sort = { value: "default" };
+const state_filter = { hideOffered: false };
 
 function bindSort() {
   const sel = document.getElementById("sort");
   if (!sel) return;
   sel.addEventListener("change", () => {
     state_sort.value = sel.value;
+    renderGifts();
+  });
+}
+
+function bindHideOffered() {
+  const box = document.getElementById("hide-offered");
+  if (!box) return;
+  box.addEventListener("change", () => {
+    state_filter.hideOffered = box.checked;
     renderGifts();
   });
 }
@@ -516,7 +527,11 @@ function celebrate(gift, nom) {
   const after = currentCollected();
   const goal = goalAmount();
 
-  if (gift.id && gift.id !== "libre") markOffered(gift.id);
+  if (gift.id && gift.id !== "libre") {
+    markOffered(gift.id);
+    // si l'on n'affiche que les disponibles, la carte offerte doit disparaître
+    if (state_filter.hideOffered) renderGifts();
+  }
   closeModal();
   showThanks(nom);
 
@@ -721,10 +736,13 @@ function renderFilters() {
 /* ---------- Grille de cadeaux ---------- */
 function renderGifts() {
   const grid = $("#gifts");
+  const offered = offeredIds();
   let list =
     state.activeCategory === "Tous"
       ? state.gifts.slice()
       : state.gifts.filter((g) => g.category === state.activeCategory);
+  // « Disponibles uniquement » : on masque les cadeaux déjà offerts
+  if (state_filter.hideOffered) list = list.filter((g) => !offered.has(g.id));
   if (state_sort.value === "price-asc") list.sort((a, b) => a.price - b.price);
   else if (state_sort.value === "price-desc") list.sort((a, b) => b.price - a.price);
 
@@ -739,7 +757,15 @@ function renderGifts() {
   }
 
   grid.innerHTML = "";
-  const offered = offeredIds();
+  if (list.length === 0) {
+    const msg = document.createElement("p");
+    msg.className = "gifts__loading";
+    msg.textContent = state_filter.hideOffered
+      ? "Tous les cadeaux de cette catégorie ont déjà été offerts — merci infiniment 💛"
+      : "Aucun cadeau dans cette catégorie.";
+    grid.appendChild(msg);
+    return;
+  }
   list.forEach((g, i) => {
     const card = document.createElement("article");
     card.className = "card reveal";
