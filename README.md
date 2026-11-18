@@ -4,7 +4,7 @@ Site web statique (GitHub Pages, sans base de données) pour notre liste de
 mariage sur le thème d'un **voyage de noces au Japon** 🗾.
 
 Les invités peuvent offrir une « activité » du voyage (vols, hôtel, plongée,
-ramen…) ou un montant libre, et payer par **PayPal** ou **carte
+ramen…) ou un montant libre, et payer par **PayPal**, **Wero** ou **carte
 (Stripe)**. Un petit formulaire de confirmation nous prévient à chaque cadeau.
 
 ## 🗂️ Structure
@@ -24,8 +24,8 @@ Tout est centralisé dans `data/config.json`. Cherchez les `CHANGE_ME` / `XXXX` 
 1. **PayPal** — `payment.paypalMe.url` : votre lien `https://paypal.me/votrepseudo`.
    Le site ajoute automatiquement le montant et rappelle de choisir
    « **Entre amis et famille** » pour éviter les frais.
-2. **Banque** — `payment.bankTransfer` : `accountHolder`, `compte`, `bic`.
-   Le numéro de compte s'affiche avec un bouton « Copier ».
+2. **Wero** : `payment.wero.recipients`, le prénom et le numéro de chaque
+   bénéficiaire.
 3. **Stripe** — `payment.stripe` : laissez `enabled: false` tant que ce n'est
    pas prêt. Quand vous aurez un lien de paiement Stripe, mettez `enabled: true`
    et l'`url`. La note prévient déjà les invités des **frais** (~1,5 % + 0,25 €).

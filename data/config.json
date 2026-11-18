@@ -27,17 +27,10 @@
       ],
       "note": "Paiement instantané et sans frais via Wero (depuis l'appli de votre banque). Envoyez au numéro d'Arthur ou de Mathilde."
     },
-    "bankTransfer": {
-      "enabled": true,
-      "accountHolder": "Arthur Carpentier et Mathilde Tauveron",
-      "compte": "",
-      "bic": "",
-      "note": "Sans frais. Merci d'indiquer en libellé votre nom et l'activité offerte."
-    },
     "stripe": {
       "enabled": false,
       "url": "",
-      "note": "Le paiement par carte (Stripe) entraîne des frais (~1,5% + 0,25€) qui sont déduits du montant : nous ne recevrons donc qu'une partie de votre don. Privilégiez si possible PayPal entre amis."
+      "note": "Le paiement par carte (Stripe) entraîne des frais (~1,5% + 0,25€) qui sont déduits du montant : nous ne recevrons donc qu'une partie de votre don. Privilégiez si possible PayPal entre amis ou Wero."
     }
   },
   "notification": {
