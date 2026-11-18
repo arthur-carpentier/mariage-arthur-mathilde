@@ -941,7 +941,6 @@ function availableMethods() {
   const list = [];
   if (p.paypalMe && p.paypalMe.enabled && isReal(p.paypalMe.url)) list.push({ track: "PayPal", label: "🅿️ PayPal" });
   if (p.wero && p.wero.enabled && (p.wero.recipients || []).some((r) => r && isReal(r.phone))) list.push({ track: "Wero", label: "📱 Wero" });
-  if (p.bankTransfer && p.bankTransfer.enabled && isReal(p.bankTransfer.compte)) list.push({ track: "Banque", label: "🏦 Banque" });
   if (p.stripe && p.stripe.enabled && isReal(p.stripe.url)) list.push({ track: "Stripe", label: "💳 Carte" });
   return list;
 }
@@ -994,23 +993,6 @@ function renderPayMethods() {
         })
       );
     }
-  }
-
-  // Banque
-  if (p.bankTransfer && p.bankTransfer.enabled && isReal(p.bankTransfer.compte)) {
-    const bt = p.bankTransfer;
-    box.appendChild(
-      methodEl({
-        icon: "🏦",
-        name: "Compte bancaire",
-        note: bt.note,
-        action: `
-          ${copyRow("Titulaire", bt.accountHolder)}
-          ${copyRow("Compte", bt.compte)}
-          ${bt.bic && isReal(bt.bic) ? copyRow("BIC", bt.bic) : ""}`,
-        track: "Banque",
-      })
-    );
   }
 
   // Stripe
